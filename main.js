@@ -1,120 +1,201 @@
-var canvas; 
-var stage;
-var scrren_width;
-var screen_height;
-var bmpAnimation;
+/**
+* Moving soldat
+* is printed with canvas/sprites 
+* has methods as move 
+**/
+window.Key = {
+  pressed: {},
 
-var imgSoldier  =new Image();
+  LEFT:   37,
+  UP:     38,
+  RIGHT:  39,
+  DOWN:   40,
+  SPACE:  32,
+  A:      65,
+  S:      83,
+  D:      68,
+  w:      87,
+  
+  isDown: function(keyCode, keyCode1) {
+    return this.pressed[keyCode] || this.pressed[keyCode1];
+  },
+  
+  onKeydown: function(event) {
+    this.pressed[event.keyCode] = true;
+  },
+  
+  onKeyup: function(event) {
+    delete this.pressed[event.keyCode];
+  }
+};
+window.addEventListener('keyup',   function(event) { Key.onKeyup(event); },   false);
+window.addEventListener('keydown', function(event) { Key.onKeydown(event); }, false);
 
-// load the image and get the canvas element we want to work on
-function init() {
-    canvas = document.getElementById("myCanvas");
 
-    imgSoldier.onload=handleImageLoad;
-    imgSoldier.onerror = handleImageError;
-    imgSoldier.src = "../img/MonsterARun.png";
+
+var canvas;
+var stage; 
+var numberOfImages = 0;
+var totalNumberOfImages = 1;
+var screen_width =0, screen_height = 0;
+function handleImageLoad(e)
+{
+    numberOfImages++;
+
+	if(numberOfImages == totalNumberOfImages)
+	{
+		startGame();
+	}
 }
-// ad är stage och vad är ticker?
-function reset() {
-    stage.removeAllChildren();
-    createjs.Ticker.removeAllListeners();
-    stage.update();
-}
-// start the game, this function is invoked by the onload in the init function
-function handleImageLoad(e) {
-    startGame();
+function handleImageError(e)
+{
+	console.log("Image error somewhere");
 }
 
-function startGame() {
-
-     /*  A stage is the root level Container for a display list.
-         Each time its tick method is called, it will render its
-         display list to its target canvas.
-    */ 
-
-    // create a new stage and point at our canvas
-    stage = new createjs.Stage(canvas);
-
-    // get the canvas dimention
-    screen_height =canvas.height;
-    screen_width = canvas.width;
-
-
-    /*
-        Encapsulates the properties and methods associated with a sprite sheet. A sprite sheet is a series of images (usually animation frames) combined into a larger image (or images). For example, an animation consisting of 8 100x100 images could be combined into a 400x200 sprite sheet (4 frames across by 2 high).
-        The data passed to the SpriteSheet constructor defines three critical pieces of information:
-
-        The image or images to use.
-        The positions of individual image frames. This data can be represented in one of two ways: As a regular grid of sequential, equal-sized frames, or as individually defined, variable sized frames arranged in an irregular (non-sequential) fashion.
-        Likewise, animations can be represented in two ways: As a series of sequential frames, defined by a start and end frame [0,3], or as a list of frames [0,1,2,3]. 
-    */
-
-    // create a spritesheet and assign the asociated data.
-    var spriteSheet = new createjs.SpriteSheet({
-
-        images: [imgSoldier], // an array of images (we only use one at the moment)
-        frames: {width: 64, height:64,regX:32,regY:32}, // the frame dimention
-        animations: {
-            walk: [0,9,"walk"]
-        }
-    });
-
-
-    // create a BitmapAnimation instance to display and play back the sprite sheet:
-    bmpAnimation = new createjs.BitmapAnimation(spriteSheet);
-
-    // start playing the first sequence:
-    bmpAnimation.gotoAndPlay("walk");   //animate
-
-    // set up a shadow. Note that shadows are ridiculously expensive. You could display hundreds
-    // of animated rats if you disabled the shadow.
-
-
-    bmpAnimation.name = "monster1";
-    bmpAnimation.direction = 90;
-    bmpAnimation.vX = 4;
-    bmpAnimation.x = 16;
-    bmpAnimation.y = 32;
-        
-    // have each monster start at a specific frame
-    bmpAnimation.currentFrame = 0;
-    stage.addChild(bmpAnimation);
-        
-    // we want to do some work before we update the canvas,
-    // otherwise we could use Ticker.addListener(stage);
-    createjs.Ticker.addListener(window);
-    createjs.Ticker.useRAF = true;
-    createjs.Ticker.setFPS(60);
+function resetScreen()
+{
+	stage.removeAllChildren();
+  	createjs.Ticker.removeAllListeners();
+  	stage.update();
 }
-//called if there is an error loading the image (usually due to a 404)
-function handleImageError(e) {
-    console.log("Error Loading Image : " + e.target.src);
 
+
+function Soldat(name)
+{
+	this.name = name || "random";
+	this.iSoldat = new Image();
+	this.iLoaded = 0;
+	this.ready = false;
+	this.spriteSheet = null;
+	this.animation = null;
+	this.path = "img/running.png";
+	console.log("constructor invoked");
+}
+
+
+Soldat.prototype = {
+	init: function() {
+
+
+		this.iSoldat.src = this.path;
+		this.iSoldat.onerror = handleImageError;
+		this.iSoldat.onload = this.build.call(this);
+		console.log("init soldat");
+	},
+	build: function() {
+
+		 this.spriteSheet = new createjs.SpriteSheet({
+	  		images: [this.iSoldat],
+	  		frames: {width:33, height:40, regX:20, regY:20},
+	  		animations: {
+	  			walk: [0,11,"walk",5]
+	  		}
+		});
+
+	   	createjs.SpriteSheetUtils.addFlippedFrames(this.spriteSheet, true, false, false);
+
+	    this.animation = new createjs.BitmapAnimation(this.spriteSheet);
+	    this.animation.name = name;
+	    this.animation.direction = 90;
+	  	this.animation.vX = 2;
+	  	this.animation.vY = 0;
+	  	this.animation.x = 16;
+	  	this.animation.y = 32;
+
+	 	this.animation.regX = this.animation.spriteSheet.frameWidth / 2 | 0;
+   		this.animation.regY = this.animation.spriteSheet.frameHeight / 2 | 0;
+
+   		this.animation.currentFrame = 0;
+   		this.addToStage.call(this);
+   		this.animation.gotoAndPlay("walk_h");     //walking from left to right
+
+//   		this.animation.gotoAndPlay("walk");
+
+   		console.log("build soldat");
+	},
+	setDirection: function(dir) {
+
+		this.animation.direction = dir;
+
+		if(dir == 90) {
+			// we want the sprite to turn right
+			this.animation.gotoAndPlay("walk_h");     //walking from left to right
+		}
+		else {
+			this.animation.gotoAndPlay("walk");
+			// we want the sprite to turn left
+		}
+	},
+	setSpeed: function(speed) {
+		this.animation.vX = speed;
+	  	this.animation.vY = speed;
+	},
+	setState: function(state) {
+		this.animation.gotoAndPlay(state);
+
+	},
+	addToStage: function() {
+		stage.addChild(this.animation);
+
+	},
+	move: function() {
+			if (this.animation.direction == 90) {
+	           this.animation.x += this.animation.vX;
+	           this.animation.y += this.animation.vY;
+	        }
+	        else {
+	           this.animation.x -= this.animation.vX;
+	           this.animation.y -= this.animation.vY;
+	        }	    	
+	},
+	update: function() {
+      	if (Key.isDown(Key.LEFT)){
+      		this.setDirection.call(this,-90);
+      		console.log("left");
+      	}
+      	if (Key.isDown(Key.RIGHT)) {
+      		this.setDirection.call(this,90);
+      		console.log("right");
+      	}
+	}
 }
 
 
 function tick() {
-    // Hit testing the screen width, otherwise our sprite would disappear
-    if (bmpAnimation.x >= screen_width - 16) {
-        // We've reached the right side of our screen
-        // We need to walk left now to go back to our initial position
-        bmpAnimation.direction = -90;
-    }
+  		// check if we are walking outside the canvas
+  		window.s.update();
+  		window.s.move();
 
-    if (bmpAnimation.x < 16) {
-        // We've reached the left side of our screen
-        // We need to walk right now
-        bmpAnimation.direction = 90;
-    }
-
-    // Moving the sprite based on the direction & the speed
-    if (bmpAnimation.direction == 90) {
-        bmpAnimation.x += bmpAnimation.vX;
-    }
-    else {
-        bmpAnimation.x -= bmpAnimation.vX;
-    }
-
-    // update the stage:
-    stage.update();
+        stage.update();
 }
+function build()
+{
+	window.s.build();
+}
+function startGame()
+{
+	canvas = document.getElementById("testCanvas");
+
+	stage = new createjs.Stage(canvas);
+	screen_width = canvas.width;
+	screen_height = canvas.height;
+
+	window.s = new Soldat("soldat1");
+	window.s.init();
+	window.s.setDirection(90);
+
+	createjs.Ticker.addListener(window);
+    createjs.Ticker.useRAF = true;
+    createjs.Ticker.setFPS(60);
+}
+
+startGame();
+
+
+
+
+
+/**
+ * Trace the keys pressed
+ * http://nokarma.org/2011/02/27/javascript-game-development-keyboard-input/index.html
+ */
