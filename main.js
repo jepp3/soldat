@@ -39,7 +39,11 @@ window.addEventListener('keydown', function(event) {
 	
 },	false);
 
-function handleImageLoad(e)
+/**
+*	Function that starts the game when everything has loaded
+*	not used know, because we only have one soldat
+*/
+function gameLoader(e)
 {
 	numberOfImages++;
 
@@ -48,22 +52,37 @@ function handleImageLoad(e)
 		startGame();
 	}
 }
+/*
+*	Invoked when theres an error with the sprite images
+*/
 function handleImageError(e)
 {
 	console.log("Image error somewhere");
 }
+/**
+* clears the screen, used on "game over" etc.
+*/
 function resetScreen()
 {
 	stage.removeAllChildren();
   	createjs.Ticker.removeAllListeners();
   	stage.update();
 }
+/*
+*	This is the game loop that runs in x fps. 
+*/
 function tick() {
-  		// check if we are runing outside the canvas
   		
+  		// update soldier 
   		window.s.update();
+  		// update stage (container)
         stage.update();
 }
+/**
+*	This is the "constructor" of the game. its the first function to be called.
+*	It creates the object. When this function is finished,
+*	the startGame will be called by gameLoader
+*/
 function preparations()
 {
 	canvas = document.getElementById("testCanvas");
@@ -76,12 +95,18 @@ function preparations()
 	window.s.init();
 	
 }
+/**
+* This starts the game, sets the fps and tells the brobrwser to use RAF
+*
+*/
 function startGame()
 {
 	createjs.Ticker.addListener(window);
     createjs.Ticker.useRAF = true;
     createjs.Ticker.setFPS(90);
 
+
+    // so that the solider is not running
     window.s.setMode("idle");
 }
 
