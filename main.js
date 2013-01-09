@@ -19,69 +19,7 @@ $(document).ready(function() {
 
 	canvas = document.getElementById("metal_slug");
 	preparations();
-	window.addEventListener('keyup',   function(event) {
-		Key.onKeyup(event);
-		downNow = false;
-
-		var soldierPos = window.s.getPos();
-
-		if(soldierPos.y > stage.mouseX)
-		{
-			window.s.idle(-90);
-		}
-		else
-		{
-			window.s.idle(90);
-		}
-
-		window.s.idle(window.s.getCurrentDirection());
-	},   false);
-
-	window.addEventListener('keydown', function(event) {
-		Key.onKeydown(event);
-		if(downNow == false) // removes the "multiclicks"
-		{
-	  		var soldierPos = window.s.getPos();
-	  		if(Key.isDown(Key.A) && soldierPos.x < stage.mouseX)
-	  		{
-	  			window.s.reverse(-90);
-	  		}
-	  		else if(Key.isDown(Key.D) && soldierPos.x > stage.mouseX)
-	  		{
-	  			window.s.reverse(90);
-	  		}
-			else if(Key.isDown(Key.D)) // <-
-			{
-	//			console.log(map);
-				window.s.run(90);
-			}
-			else if(Key.isDown(Key.A)) // ->
-			{
-				window.s.run(-90);
-			}
-			downNow = true;
-		}
-		if(Key.isDown(Key.SPACE))
-		{
-			window.s.jump(window.s.getCurrentDirection());
-			console.log("SPACE");
-		}
-	},	false);
-
-	canvas.onclick = function(){
-		var soldierPos = window.s.getPos();
-
-		if(soldierPos.x > stage.mouseX)
-		{
-			window.s.shoot(-90);
-		}
-		else
-		{
-			window.s.shoot(90);
-		}
-	};
-
-
+	
 
 		/**
 	* This starts the game, sets the fps and tells the brobrwser to use RAF
@@ -199,6 +137,81 @@ $(document).ready(function() {
 		images.under.onerror = handleImageError;
 		images.under.onload  = gameLoader;
 		//startGame();
+
+
+
+
+
+		window.addEventListener('keyup',   function(event) {
+			Key.onKeyup(event);
+			downNow = false;
+
+			var soldierPos = window.s.getPos();
+
+			if(soldierPos.y > stage.mouseX)
+			{
+				window.s.idle(DIRECTION.LEFT);
+			}
+			else
+			{
+				window.s.idle(DIRECTION.RIGHT);
+			}
+
+			window.s.idle(window.s.getCurrentDirection());
+		},   false);
+
+		window.addEventListener('keydown', function(event) {
+			Key.onKeydown(event);
+			var soldierPos = window.s.getPos();
+			if(downNow == false) // removes the "multiclicks"
+			{
+		  		
+		  		if(Key.isDown(Key.A) && soldierPos.x < stage.mouseX)
+		  		{
+		  			window.s.reverse(DIRECTION.LEFT);
+		  		}
+		  		else if(Key.isDown(Key.D) && soldierPos.x > stage.mouseX)
+		  		{
+		  			window.s.reverse(DIRECTION.RIGHT);
+		  		}
+				else if(Key.isDown(Key.D)) // <-
+				{
+		//			console.log(map);
+					window.s.run(DIRECTION.RIGHT);
+				}
+				else if(Key.isDown(Key.A)) // ->
+				{
+					window.s.run(DIRECTION.LEFT);
+				}
+				downNow = true;
+			}
+			if(Key.isDown(Key.SPACE))
+			{
+				if(soldierPos.x > stage.mouseX) {
+					window.s.jump(DIRECTION.LEFT);
+				}
+				else {
+					window.s.jump(DIRECTION.RIGHT);
+				}
+				
+				console.log("SPACE");
+			}
+		},	false);
+
+		canvas.onclick = function(){
+			var soldierPos = window.s.getPos();
+
+			if(soldierPos.x > stage.mouseX)
+			{
+				window.s.shoot(DIRECTION.LEFT);
+			}
+			else
+			{
+				window.s.shoot(DIRECTION.RIGHT);
+			}
+		};
+
+
 	}
 
 
