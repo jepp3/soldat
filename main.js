@@ -27,12 +27,11 @@ $(document).ready(function() {
 	*/
 	function startGame()
 	{
-
 		window.s = new Soldat(stage);
 		window.s.init(images.under,images.over);
 
 		stage.addChild(window.s.returnSoldier());
-		console.log("added child");
+	
 
 		createjs.Ticker.addListener(tick);
 	    createjs.Ticker.useRAF = true;
@@ -48,7 +47,7 @@ $(document).ready(function() {
 		console.log(numberOfImages);
 		if(numberOfImages == totalNumberOfImages)
 		{
-			console.log("we will start");
+	
 			startGame();
 		}
 	}
@@ -137,7 +136,7 @@ $(document).ready(function() {
 		images.under.onerror = handleImageError;
 		images.under.onload  = gameLoader;
 		//startGame();
-
+		var jumping = false;
 
 
 
@@ -148,16 +147,23 @@ $(document).ready(function() {
 
 			var soldierPos = window.s.getPos();
 
-			if(soldierPos.y > stage.mouseX)
+			if(Key.isDown(Key.A) || Key.isDown(Key.D))
 			{
-				window.s.idle(DIRECTION.LEFT);
+				downNow = true;
 			}
 			else
 			{
-				window.s.idle(DIRECTION.RIGHT);
+				if(soldierPos.y > stage.mouseX)
+				{
+					window.s.idle(DIRECTION.LEFT);
+				}
+				else
+				{
+					window.s.idle(DIRECTION.RIGHT);
+				}
 			}
 
-			window.s.idle(window.s.getCurrentDirection());
+		//	window.s.idle(window.s.getCurrentDirection());
 		},   false);
 
 		window.addEventListener('keydown', function(event) {
@@ -176,7 +182,6 @@ $(document).ready(function() {
 		  		}
 				else if(Key.isDown(Key.D)) // <-
 				{
-		//			console.log(map);
 					window.s.run(DIRECTION.RIGHT);
 				}
 				else if(Key.isDown(Key.A)) // ->
@@ -184,10 +189,12 @@ $(document).ready(function() {
 					window.s.run(DIRECTION.LEFT);
 				}
 				downNow = true;
+				
 			}
 			if(Key.isDown(Key.SPACE))
 			{
 				window.s.jump(window.s.getCurrentDirection());
+				jumping = true;
 				console.log("SPACE");
 			}
 		},	false);
