@@ -187,13 +187,7 @@ $(document).ready(function() {
 			}
 			if(Key.isDown(Key.SPACE))
 			{
-				if(soldierPos.x > stage.mouseX) {
-					window.s.jump(DIRECTION.LEFT);
-				}
-				else {
-					window.s.jump(DIRECTION.RIGHT);
-				}
-				
+				window.s.jump(window.s.getCurrentDirection());
 				console.log("SPACE");
 			}
 		},	false);
