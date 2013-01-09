@@ -18,10 +18,22 @@ var images = {
 $(document).ready(function() {
 
 	canvas = document.getElementById("metal_slug");
-
+	preparations();
 	window.addEventListener('keyup',   function(event) {
 		Key.onKeyup(event);
 		downNow = false;
+
+		var soldierPos = window.s.getPos();
+
+		if(soldierPos.y > stage.mouseX)
+		{
+			window.s.idle(-90);
+		}
+		else
+		{
+			window.s.idle(90);
+		}
+
 		window.s.idle(window.s.getCurrentDirection());
 	},   false);
 
@@ -29,16 +41,16 @@ $(document).ready(function() {
 		Key.onKeydown(event);
 		if(downNow == false) // removes the "multiclicks"
 		{
-			// if(window.s.animation.x > canvas.width*.25 && Key.isDown(Key.RIGHT)) {
-	  		// 	console.log("move map");
-	  		// 	map.background.regX += s.animation.vX;
-	  		// }else if(window.s.animation.x < canvas.width*.05 && Key.isDown(Key.LEFT)){
-	  		// 	map.background.regX -= s.animation.vX;
-	  		// }else {
-	  		// 	s.update();
-	  		// }
-	  		// map.update(map.background.regX, map.background.regY);
-			if(Key.isDown(Key.D)) // <-
+	  		var soldierPos = window.s.getPos();
+	  		if(Key.isDown(Key.A) && soldierPos.x < stage.mouseX)
+	  		{
+	  			window.s.reverse(-90);
+	  		}
+	  		else if(Key.isDown(Key.D) && soldierPos.x > stage.mouseX)
+	  		{
+	  			window.s.reverse(90);
+	  		}
+			else if(Key.isDown(Key.D)) // <-
 			{
 	//			console.log(map);
 				window.s.run(90);
@@ -47,20 +59,26 @@ $(document).ready(function() {
 			{
 				window.s.run(-90);
 			}
-			else if(Key.isDown(Key.SPACE))
-			{
-				window.s.idle(90);
-				console.log("SPACE");
-			}
 			downNow = true;
 		}
-
+		if(Key.isDown(Key.SPACE))
+		{
+			window.s.jump(window.s.getCurrentDirection());
+			console.log("SPACE");
+		}
 	},	false);
 
 	canvas.onclick = function(){
-		console.log("click");
+		var soldierPos = window.s.getPos();
 
-		window.s.shoot();
+		if(soldierPos.x > stage.mouseX)
+		{
+			window.s.shoot(-90);
+		}
+		else
+		{
+			window.s.shoot(90);
+		}
 	};
 
 
@@ -184,5 +202,5 @@ $(document).ready(function() {
 	}
 
 
- 	preparations();
+ 	
 });
