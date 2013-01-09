@@ -8,7 +8,7 @@ function Soldat(stage)
 	this.images = {over: null, under: null};
 	this.animations = {over: null, under:null};
 	this.soldier = new createjs.Container();
-	this.direction = 90;
+	
 	this.stage = stage;
 	this.weight = {x:0,y:8};
 	this.jumping = true;
@@ -37,7 +37,7 @@ Soldat.prototype = {
 	  		images: [this.images.over],
 	  		frames: {width:56.5, height:26, regX:13, regY:13},
 	  		animations: {
-	  			shoot: [0,6,"idle",2],
+	  			shoot: [0,6,"idle",1],
 	  			idle: [7,7,"idle",20]
 	  		}
 		});
@@ -83,21 +83,21 @@ Soldat.prototype = {
 	},
 	setDirection: function(mode) {
 
-		if(this.direction == -90 ) {
+		if(this.way == DIRECTION.LEFT ) {
 			this.animations.under.gotoAndPlay(mode+"_h");     //runing from left to right
 			this.animations.over.gotoAndPlay("idle_h");
 		}
-		else if (this.direction == 90) {
+		else if (this.way == DIRECTION.RIGHT) {
 			this.animations.under.gotoAndPlay(mode);
 			this.animations.over.gotoAndPlay("idle");
 		}
 	},
 	getCurrentDirection: function()
 	{
-		return this.direction;
+		return this.way;
 	},
 	move: function() {
-		if (this.direction == 90) {
+		if (this.way == DIRECTION.RIGHT) {
           	this.soldier.x += this.soldier.vX;
            this.soldier.y += this.soldier.vY;
         }
@@ -107,32 +107,28 @@ Soldat.prototype = {
         }	    	
 	},
 	idle: function(dir) {
-		this.direction = dir;
+		this.way = dir;
 		this.soldier.vX = 0;
 		//this.animations.under.gotoAndPlay("idle");
 		this.setDirection.call(this,"idle");
 	},
-	walk: function(dir) {
-		this.soldier.vX = 1;
-		this.animations.under.gotoAndPlay("walk");
-	},
 	run: function(dir) {
-		this.direction = dir;
+		this.way = dir;
 		this.soldier.vX = 1.8;
 		this.setDirection.call(this,"run");
 		//this.animations.under.gotoAndPlay("run");
 	},
 	reverse: function(dir) {
-		this.direction = dir;
+		this.way = dir;
 		this.soldier.vX = 1.8;
 		//this.setDirection.call(this,"run");
-		if(this.direction == -90 ) {
+		if(this.way == DIRECTION.LEFT) {
 
 			console.log("revse -90");
 
 			this.animations.under.gotoAndPlay("run");     //runing from left to right
 		}
-		else if (this.direction == 90) {
+		else if (this.way == DIRECTION.RIGHT) {
 
 			console.log("reverse 90");
 			this.animations.under.gotoAndPlay("run_h");
@@ -140,11 +136,12 @@ Soldat.prototype = {
 	},
 	jump:function(dir) {
 
-		this.direction = dir;
+		this.way = dir;
+		console.log(this.way);
 		this.jumping = true;
 	},
 	shoot: function(dir) {
-		if(dir == 90) {
+		if(dir == DIRECTION.RIGHT) {
 			this.animations.over.gotoAndPlay("shoot");
 		}
 		else {
@@ -190,7 +187,7 @@ Soldat.prototype = {
 	    	// om musen är på vänster sida, och vi inte trycker på D
 	    	else if(this.stage.mouseX < this.soldier.x  && Key.isDown(Key.D) === undefined) {
 	    		if(this.way != DIRECTION.LEFT) {// om vi inte redan är på vänster sida( byta ut mot enum)
-	    			this.idle.call(this,-90);
+	    			this.idle.call(this,DIRECTION.LEFT);
 	    			this.way = DIRECTION.LEFT;
 	    		}
 	    		this.animations.over.rotation = angle +200;
@@ -199,7 +196,7 @@ Soldat.prototype = {
 	    	else if(this.stage.mouseX > this.soldier.x && Key.isDown(Key.A) === undefined) {
 
 	    		if(this.way != DIRECTION.RIGHT) {// om vi inte redan är på höger sida
-	    			this.idle.call(this,90);
+	    			this.idle.call(this,DIRECTION.RIGHT);
 	    			this.way = DIRECTION.RIGHT;
 	    		}
 	    		//this.idle.call(this,90);    		
