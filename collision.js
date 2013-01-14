@@ -234,34 +234,38 @@ THE SOFTWARE.
 // console.log(Map.backgrounds.getChildAt(2).regX)
 			if(direction == DIRECTION.RIGHT && player.x > canvas.width/2){
 				// Right movements
-				if(Map.backgrounds.getChildAt(2).regX + canvas.width < Map.images.bitmaps.background.width){
+				if(Math.abs(stage.x) + canvas.width < Map.images.bitmaps.background.width){
+					// console.log(stage.x - canvas.width )
+					// console.log(Map.images.bitmaps.background.width)
 					// Map.background.regX += player.vX;
 					// Map.platforms.getChildAt(0).regX += player.vX;
 					// if(player.vX > 0) console.log(player.vX)
-					if(Map.backgrounds.getChildAt(2).regX + canvas.width > 3500 && Map.backgrounds.getChildAt(2).regX + canvas.width < 3951){
+					if(Math.abs(stage.x) > 3500 && Math.abs(stage.x) < -3951){
 						y = -player.vX/4;
 					}
-					Map.update(player.vX, y);
-					return true;
+					Map.update(-player.vX, y);
+					// return true;
 				}else{
-		  			if(player.x < canvas.width - 16){
+		  			if(player.x < Math.abs(stage.x) + canvas.width - 16){
 		  				return false;
 		  			}
 		  			return true;
 		  		}
-			}else if(direction == DIRECTION.LEFT && player.x < canvas.width/10){
+			}else if(direction == DIRECTION.LEFT && player.x +stage.x < canvas.width/10){
 				// Left movements
-  				if(Map.backgrounds.getChildAt(2).regX > 0){
-  					if(Map.backgrounds.getChildAt(2).regX + canvas.width < 3951 && Map.backgrounds.getChildAt(2).regX + canvas.width > 3500){
+				// console.log(stage.x)
+  				if(Math.abs(stage.x) > 0){
+  					// if(Map.backgrounds.getChildAt(2).regX + canvas.width < 3951 && Map.backgrounds.getChildAt(2).regX + canvas.width > 3500){
+  					if(Math.abs(stage.x) < 3951 && Math.abs(stage.x) > 3500){
   						y = player.vX/4;
   					}
-					Map.update(-player.vX, y);
+					Map.update(player.vX, y);
 	  				// Map.background.regX -= player.vX;
 	  				// Map.platforms.getChildAt(0).regX -= player.vX;
-	  				return true;
+	  				// return ;
 	  			}
 	  			else{
-	  				if(player.x > 16)
+	  				if(player.x + Math.abs(stage.x) > 16)
 	  					return true;
 	  			}
 

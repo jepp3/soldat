@@ -121,16 +121,12 @@ $(document).ready(function() {
 	    			{
 	    				//console.log("bulet hit enemy");
 	    				enemies[j].die(enemies[j].way);
-	    				
+
 	    				setTimeout(resetEnemy, 800, j);
 	    				//stage.removeChild(enemies[j].returnEnemy());
 	    			}
 	    		}
-	    		
 	    	}
-
-	  		
-	  		
 	        stage.update();
 	}
 	/**
@@ -177,7 +173,7 @@ $(document).ready(function() {
 			}
 			else
 			{
-				if(soldierPos.y > stage.mouseX)
+				if(soldierPos.y > stage.mouseX - stage.x)
 				{
 					window.s.idle(DIRECTION.LEFT);
 				}
@@ -196,11 +192,11 @@ $(document).ready(function() {
 			if(downNow == false) // removes the "multiclicks"
 			{
 		  		
-		  		if(Key.isDown(Key.A) && soldierPos.x < stage.mouseX)
+		  		if(Key.isDown(Key.A) && soldierPos.x < stage.mouseX - stage.x)
 		  		{
 		  			window.s.reverse(DIRECTION.LEFT);
 		  		}
-		  		else if(Key.isDown(Key.D) && soldierPos.x > stage.mouseX)
+		  		else if(Key.isDown(Key.D) && soldierPos.x > stage.mouseX - stage.x)
 		  		{
 		  			window.s.reverse(DIRECTION.RIGHT);
 		  		}
@@ -213,7 +209,7 @@ $(document).ready(function() {
 					window.s.run(DIRECTION.LEFT);
 				}
 				downNow = true;
-				
+
 			}
 
 			if(Key.isDown(Key.SPACE))
@@ -230,7 +226,7 @@ $(document).ready(function() {
 	//		var angle = window.s.getAngle();
 	//		window.b.fire(p.x,p.y,angle);
 
-			if(soldierPos.x > stage.mouseX)
+			if(soldierPos.x > stage.mouseX - stage.x)
 			{
 
 				window.s.shoot(DIRECTION.LEFT);

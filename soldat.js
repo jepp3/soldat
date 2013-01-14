@@ -172,8 +172,8 @@ Soldat.prototype = {
 			var cy = this.soldier.y;
 
 			var mx, my = 0;
-	    	mx = this.stage.mouseX;
-	    	my = this.stage.mouseY;
+	    	mx = this.stage.mouseX - stage.x;
+	    	my = this.stage.mouseY - stage.y;
 	    	var angle = Math.atan2(my - cy, mx - cx) * 180 / Math.PI;
 
 	    	if(angle < 0) { angle = 360 + angle; }
@@ -196,26 +196,27 @@ Soldat.prototype = {
 	    	}
 
 	  		// OM musen Ã¤rÂ¨pÃ¥ vÃ¤nster sida av soldaten  och  vi gÃ¥r Ã¥t hÃ¶ger
-	    	if(this.stage.mouseX < this.soldier.x  && Key.isDown(Key.D) ==true) {
+	    	if(this.stage.mouseX - stage.x < this.soldier.x  && Key.isDown(Key.D) ==true) {
 	    			//this.idle.call(this,-90);
 	    			//
 	    			this.animations.over.rotation = angle +200;
 	    	}
 	    	// OM musen Ã¤r pÃ¥ hÃ¶gersida av soldaten och vi gÃ¥r Ã¥t vÃ¤nster
-	    	else if(this.stage.mouseX > this.soldier.x && Key.isDown(Key.A) ==true) {
+	    	else if(this.stage.mouseX - stage.x > this.soldier.x && Key.isDown(Key.A) ==true) {
 	    			//this.idle.call(this,90);	
 	    			this.animations.over.rotation = angle -25;
 	    	}
 	    	// om musen Ã¤r pÃ¥ vÃ¤nster sida, och vi inte trycker pÃ¥ D
-	    	else if(this.stage.mouseX < this.soldier.x  && Key.isDown(Key.D) === undefined) {
+	    	else if(this.stage.mouseX - stage.x < this.soldier.x  && Key.isDown(Key.D) === undefined) {
 	    		if(this.way != DIRECTION.LEFT) {// om vi inte redan Ã¤r pÃ¥ vÃ¤nster sida( byta ut mot enum)
 	    			this.idle.call(this,DIRECTION.LEFT);
 	    			this.way = DIRECTION.LEFT;
 	    		}
 	    		this.animations.over.rotation = angle +200;
 	    	}
+
 	    	// OM musen Ã¤r pÃ¥ hÃ¶ger sida och vi intetrycker pÃ¥ A
-	    	else if(this.stage.mouseX > this.soldier.x && Key.isDown(Key.A) === undefined) {
+	    	else if(this.stage.mouseX - stage.x > this.soldier.x && Key.isDown(Key.A) === undefined) {
 
 	    		if(this.way != DIRECTION.RIGHT) {// om vi inte redan Ã¤r pÃ¥ hÃ¶ger sida
 	    			this.idle.call(this,DIRECTION.RIGHT);
@@ -225,6 +226,7 @@ Soldat.prototype = {
 	    		this.animations.over.rotation = angle -25;
 	    	}
 
+// console.log(this.soldier.x)
 	    	if(!Collision.grid(this.soldier, this.way)){
 		    	this.move();
 		    }

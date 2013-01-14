@@ -155,35 +155,38 @@
 		update: function(x,y){
 			var i,
 				y = y || 0;
+
+				stage.x += x;
+				stage.y += y;
 			// if(this.background.regX < 3460 && this.background.regY < 17){
 			// 	y = 1;
 			// }
 			// this.background.regX += x;
 			// this.background.regY += y;
-			for(i=0; i<this.backgrounds.getNumChildren(); i++){
-				this.backgrounds.getChildAt(i).regX += x;
-				this.backgrounds.getChildAt(i).regY += y;
-			}
+			// for(i=0; i<this.backgrounds.getNumChildren(); i++){
+			// 	this.backgrounds.getChildAt(i).regX += x;
+			// 	this.backgrounds.getChildAt(i).regY += y;
+			// }
 
-			for(i=0; i<this.platforms.getNumChildren(); i++){
-				this.platforms.getChildAt(i).regX += x;
-				this.platforms.getChildAt(i).regY += y;
-			}
+			// for(i=0; i<this.platforms.getNumChildren(); i++){
+			// 	this.platforms.getChildAt(i).regX += x;
+			// 	this.platforms.getChildAt(i).regY += y;
+			// }
 
-			for(i=0; i<this.forground.getNumChildren(); i++){
-				this.forground.getChildAt(i).regX += x;
-				this.forground.getChildAt(i).regY += y;
-			}
+			// for(i=0; i<this.forground.getNumChildren(); i++){
+			// 	this.forground.getChildAt(i).regX += x;
+			// 	this.forground.getChildAt(i).regY += y;
+			// }
 
-			for(i=0; i<this.horizons.getNumChildren(); i++){
-				this.horizons.getChildAt(i).regX += x*.8;
-				this.horizons.getChildAt(i).regY += y;
-			}
+			// for(i=0; i<this.horizons.getNumChildren(); i++){
+			// 	this.horizons.getChildAt(i).regX += x*.8;
+			// 	this.horizons.getChildAt(i).regY += y;
+			// }
 
-			for(i=0; i<this.far_horizons.getNumChildren(); i++){
-				this.far_horizons.getChildAt(i).regX += x*.5;
-				this.far_horizons.getChildAt(i).regY += y;
-			}
+			// for(i=0; i<this.far_horizons.getNumChildren(); i++){
+			// 	this.far_horizons.getChildAt(i).regX += x*.5;
+			// 	this.far_horizons.getChildAt(i).regY += y;
+			// }
 		},
 		load: function(mission) {
 
