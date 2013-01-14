@@ -1,12 +1,8 @@
 (function(){
 	function Map(){
-		// this.stage = null;
-		this.iMap = {};//new Image();
+		this.iMap = {};
 		this.iLoaded = 0;
 		this.ready = false;
-		// this.spriteSheet = null;
-		// this.animation = null;
-		// this.pressing = false;
 		this.images = {};
 
 		this.platforms = new createjs.Container();
@@ -14,7 +10,6 @@
 	    this.horizons = new createjs.Container();
 	    this.backgrounds = new createjs.Container();
 	    this.forground = new createjs.Container();
-	    // this.background = new Image();
 	};
 
 	Map.objects = {};
@@ -26,9 +21,6 @@
 
 			//Platforms
 			var bitmap;
-			// ,
-			// 	horizon,
-			// 	hzon_animation;
 
 			// Bitmaps
 			for(i in this.images.bitmaps){
@@ -37,29 +29,12 @@
 				bitmap.onerror = handleImageError;
 				this.images.bitmaps[i].width = bitmap.width;
 				this.images.bitmaps[i].height = bitmap.height;
-				// if(i == "background"){
-				// 	this.iMap = bitmap.width;
-				// }
+
 				bitmap.onload = this.addToLayer(new createjs.Bitmap(bitmap),
 						this.images.bitmaps[i].layer,
 						i,
 						this.images.bitmaps[i].position);
 			}
-			// platform.src = this.images.platform;
-			// platform.onerror = handleImageError;
-			// platform.onload = this.addToLayer(new createjs.Bitmap(platform), "platform");
-
-
-		    // Background
-		    // for(i in this.images.horizon){
-		    // 	horizon = new Image();
-		    // 	horizon.src = this.images.horizon[i].url;
-		    // 	horizon.onerror = handleImageError;
-		    // 	horizon.onload = this.addToLayer(new createjs.Bitmap(horizon), this.images.ho);
-
-		   	// 	horizon.regX = this.images.horizon[i].offset.x;
-		    // 	horizon.regY = this.images.horizon[i].offset.y;
-		    // }
 
 		    // Animations
 		    for(i in this.images.animations){
@@ -74,20 +49,6 @@
 		    			this.images.animations[i].layer,
 		    			i,
 		    			this.images.animations[i].position);
-		    // 	// hzon_animation.gotoAndPlay("idle");
-		    // 	// hzon_animation.regX = this.images.
-		    // 	// animation[i].offset.x;
-		    // 	// hzon_animation.regY = this.images.
-		    // 	// animation[i].offset.y;
-		    // 	// this.
-		    // 	// animations.addChild(hzon_animation);
-		    }
-// console.log(this.images.bitmaps.background)
-		    // Forground
-			// this.iMap.background = new Image();
-			// this.iMap.background.src = this.images.bitmaps.background.url;
-			// this.iMap.background.onerror = handleImageError;
-		 //    this.iMap.background.onload = this.build.call(this);
 
 		 	this.build.call(this);
 		},
@@ -96,12 +57,7 @@
 			if(object instanceof createjs.BitmapAnimation){
 				object.gotoAndPlay("idle");
 		    	object.regX = this.images.animations[name].offset.x;
-		    	object.regY = this.images.animations[name].offset.y
-		    	// thid.images.animations[object.name].offset.x;
-		    	// hzon_animation.regY = this.images.
-		    	// animation[i].offset.y;
-		    	// this.
-		    	// animations.addChild(hzon_animation);
+		    	object.regY = this.images.animations[name].offset.y;
 			}else{
 				object.regX = this.images.bitmaps[name].offset.x;
 		    	object.regY = this.images.bitmaps[name].offset.y
@@ -141,9 +97,6 @@
 			}
 		},
 		build: function(event){
-			// this.background = new createjs.Bitmap(this.iMap.background);
-			// this.background.regY = 17;
-			// this.horizons.addChild(this.background);
 			stage.addChild(this.platforms);
 			stage.addChild(this.far_horizons)
 			stage.addChild(this.horizons);
@@ -156,13 +109,19 @@
 			var i,
 				y = y || 0;
 
+			if(Math.abs(stage.x) > 3200 && Math.abs(stage.x) < 3651){
+				y = y/4;
+			}else{
+				y = 0;
+			}
+
 			stage.x += x;
 			stage.y += y;
+
 
 			if(Math.abs(stage.x) > 1700 ){
 				 for(i=0; i<this.horizons.getNumChildren(); i++){
 					this.horizons.getChildAt(i).regX += x*.2;
-					// this.horizons.getChildAt(i).regY += y;
 				}
 			}
 
@@ -172,43 +131,11 @@
 					this.far_horizons.getChildAt(i).regY += y*.1;
 				}
 			}
-
-			// if(this.background.regX < 3460 && this.background.regY < 17){
-			// 	y = 1;
-			// }
-			// this.background.regX += x;
-			// this.background.regY += y;
-			// for(i=0; i<this.backgrounds.getNumChildren(); i++){
-			// 	this.backgrounds.getChildAt(i).regX += x;
-			// 	this.backgrounds.getChildAt(i).regY += y;
-			// }
-
-			// for(i=0; i<this.platforms.getNumChildren(); i++){
-			// 	this.platforms.getChildAt(i).regX += x;
-			// 	this.platforms.getChildAt(i).regY += y;
-			// }
-
-			// for(i=0; i<this.forground.getNumChildren(); i++){
-			// 	this.forground.getChildAt(i).regX += x;
-			// 	this.forground.getChildAt(i).regY += y;
-			// }
-
-			// for(i=0; i<this.horizons.getNumChildren(); i++){
-			// 	this.horizons.getChildAt(i).regX += x*.8;
-			// 	this.horizons.getChildAt(i).regY += y;
-			// }
-
-			// for(i=0; i<this.far_horizons.getNumChildren(); i++){
-			// 	this.far_horizons.getChildAt(i).regX += x*.5;
-			// 	this.far_horizons.getChildAt(i).regY += y;
-			// }
 		},
 		load: function(mission) {
 
 			switch(mission){
 			case "mission1":
-						// this.images.background = "img/mission1/background.png",
-						// this.images.platform = "img/mission1/background_platform.png";
 						this.images.bitmaps = {
 							platform:{
 								url:"img/mission1/background_platform.png",

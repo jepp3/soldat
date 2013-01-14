@@ -230,21 +230,12 @@ THE SOFTWARE.
 			return null;
 		},
 		grid: function(player, direction){
-			var y = 0;
+			// var y = 0;
 // console.log(Map.backgrounds.getChildAt(2).regX)
 			if(direction == DIRECTION.RIGHT && player.x > canvas.width/2 + Math.abs(stage.x)){
 				// Right movements
 				if(Math.abs(stage.x) + canvas.width < Map.images.bitmaps.background.width){
-					// console.log(stage.x - canvas.width )
-					// console.log(Map.images.bitmaps.background.width)
-					// Map.background.regX += player.vX;
-					// Map.platforms.getChildAt(0).regX += player.vX;
-					// if(player.vX > 0) console.log(player.vX)
-					if(Math.abs(stage.x) > 3200 && Math.abs(stage.x) < 3651){
-						y = player.vX/4;
-					}
-					Map.update(-player.vX, y);
-					// return true;
+					Map.update(-player.vX, player.vX);
 				}else{
 		  			if(player.x < Math.abs(stage.x) + canvas.width - 16){
 		  				return false;
@@ -253,16 +244,8 @@ THE SOFTWARE.
 		  		}
 			}else if(direction == DIRECTION.LEFT && player.x +stage.x < canvas.width/10){
 				// Left movements
-				// console.log(stage.x)
   				if(Math.abs(stage.x) > 0){
-  					// if(Map.backgrounds.getChildAt(2).regX + canvas.width < 3951 && Map.backgrounds.getChildAt(2).regX + canvas.width > 3500){
-  					if(Math.abs(stage.x) < 3651 && Math.abs(stage.x) > 3200){
-  						y = -player.vX/4;
-  					}
-					Map.update(player.vX, y);
-	  				// Map.background.regX -= player.vX;
-	  				// Map.platforms.getChildAt(0).regX -= player.vX;
-	  				// return ;
+					Map.update(player.vX, -player.vX);
 	  			}
 	  			else{
 	  				if(player.x + Math.abs(stage.x) > 16)
@@ -279,15 +262,7 @@ THE SOFTWARE.
 				hitArea,
 				bitmap,
 				collision = false;
-				// hitarea = boundsChar;
-				// hitarea.width -=10;
-				// hitarea.height = 5;
-				// hitarea.x += 5;
-				// hitarea.y -= 26;
-				// bitmap = this._intersectingImagePart.call(this, hitarea, boundsChar, this.collisionCtx);
-			// obj.x = object.vX || object.x;//window.s.soldier.vX;
-			// obj.y = object.vX || object.x;//window.s.weight.y -0.5;
-// console.log()
+
 			var compare = object;
 			if(object instanceof createjs.Container)
 			{
@@ -297,28 +272,14 @@ THE SOFTWARE.
 				hitArea,
 				bitmap;
 
-				// hitarea = boundsChar;
-				// hitarea.width -=10;
-				// hitarea.height = 5;
-				// hitarea.x += 5;
-				// hitarea.y -= 26;
-				// bitmap = this._intersectingImagePart.call(this, hitarea, boundsChar, this.collisionCtx);
-
-
-			// console.log(bitmap)
 			for(var i=0; i<platforms.getNumChildren(); i++)
 			{
-// <<<<<<< HEAD
 				if(collision = this.checkCollision(compare, platforms.getChildAt(i))){
-					// console.log(collision)
+
 					return collision;
-// =======
-// 				if(this.checkCollision(compare, platforms.getChildAt(i))){
-// 					return true;
-// >>>>>>> fa58880e13bbbb3017277f93903d460219c9cc7a
+
 				}
 			}
-			// console.log(collision)
 			return collision;
 		}
 	}
