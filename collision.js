@@ -232,7 +232,7 @@ THE SOFTWARE.
 		grid: function(player, direction){
 			var y = 0;
 // console.log(Map.backgrounds.getChildAt(2).regX)
-			if(direction == DIRECTION.RIGHT && player.x > canvas.width/2){
+			if(direction == DIRECTION.RIGHT && player.x > canvas.width/2 + Math.abs(stage.x)){
 				// Right movements
 				if(Math.abs(stage.x) + canvas.width < Map.images.bitmaps.background.width){
 					// console.log(stage.x - canvas.width )
@@ -240,8 +240,8 @@ THE SOFTWARE.
 					// Map.background.regX += player.vX;
 					// Map.platforms.getChildAt(0).regX += player.vX;
 					// if(player.vX > 0) console.log(player.vX)
-					if(Math.abs(stage.x) > 3500 && Math.abs(stage.x) < -3951){
-						y = -player.vX/4;
+					if(Math.abs(stage.x) > 3200 && Math.abs(stage.x) < 3651){
+						y = player.vX/4;
 					}
 					Map.update(-player.vX, y);
 					// return true;
@@ -256,8 +256,8 @@ THE SOFTWARE.
 				// console.log(stage.x)
   				if(Math.abs(stage.x) > 0){
   					// if(Map.backgrounds.getChildAt(2).regX + canvas.width < 3951 && Map.backgrounds.getChildAt(2).regX + canvas.width > 3500){
-  					if(Math.abs(stage.x) < 3951 && Math.abs(stage.x) > 3500){
-  						y = player.vX/4;
+  					if(Math.abs(stage.x) < 3651 && Math.abs(stage.x) > 3200){
+  						y = -player.vX/4;
   					}
 					Map.update(player.vX, y);
 	  				// Map.background.regX -= player.vX;

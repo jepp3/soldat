@@ -156,8 +156,23 @@
 			var i,
 				y = y || 0;
 
-				stage.x += x;
-				stage.y += y;
+			stage.x += x;
+			stage.y += y;
+
+			if(Math.abs(stage.x) > 1700 ){
+				 for(i=0; i<this.horizons.getNumChildren(); i++){
+					this.horizons.getChildAt(i).regX += x*.2;
+					// this.horizons.getChildAt(i).regY += y;
+				}
+			}
+
+			if(Math.abs(stage.x) > 2700) {
+				for(i=0; i<this.far_horizons.getNumChildren(); i++){
+					this.far_horizons.getChildAt(i).regX += x*.7;
+					this.far_horizons.getChildAt(i).regY += y*.1;
+				}
+			}
+
 			// if(this.background.regX < 3460 && this.background.regY < 17){
 			// 	y = 1;
 			// }
@@ -207,11 +222,9 @@
 							},
 							forest:{
 								url:"img/mission1/horizon_forest.png",
-// <<<<<<< HEAD
-								offset:{x:-1530, y:38},
-// =======
-// 								offset:{x:-1540, y:38},
-// >>>>>>> fa58880e13bbbb3017277f93903d460219c9cc7a
+
+								offset:{x:-1900, y:38},
+
 								layer:"horizon",
 							}
 						};
@@ -222,7 +235,7 @@
 								animations:{
 									idle: [0,7,"idle",10]
 								},
-								offset:{x:-1620, y:	60},
+								offset:{x:-2850, y:	60},
 								layer:"far_horizon"
 							},
 							horizon_waterfall:{

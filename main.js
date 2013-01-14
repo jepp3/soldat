@@ -230,7 +230,7 @@ $(document).ready(function() {
 			{
 
 				window.s.shoot(DIRECTION.LEFT);
-				
+				console.log(stage.x)
 			}
 			else
 			{
