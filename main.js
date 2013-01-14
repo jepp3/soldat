@@ -31,6 +31,7 @@ $(document).ready(function() {
 		window.s.init(images.under,images.over);
 
 		stage.addChild(window.s.returnSoldier());
+		Map.addForegorund();
 	
 
 		createjs.Ticker.addListener(tick);
@@ -44,7 +45,6 @@ $(document).ready(function() {
 	function gameLoader(e)
 	{
 		numberOfImages++;
-		console.log(numberOfImages);
 		if(numberOfImages == totalNumberOfImages)
 		{
 	
@@ -103,8 +103,6 @@ $(document).ready(function() {
 	*/
 	function preparations()
 	{
-		
-
 		stage = new createjs.Stage(canvas);
 		screen_width = canvas.width;
 		screen_height = canvas.height;
@@ -175,6 +173,7 @@ $(document).ready(function() {
 				downNow = true;
 				
 			}
+
 			if(Key.isDown(Key.SPACE))
 			{
 				window.s.jump(window.s.getCurrentDirection());
