@@ -1,8 +1,4 @@
 'use strict';
-var DIRECTION = {
-	LEFT: 0,
-	RIGHT: 1
-};
 function Soldat(stage)
 {
 	this.images = {over: null, under: null};
@@ -14,18 +10,22 @@ function Soldat(stage)
 	this.jumping = true;
 	this.dead = false;
 	this.way = DIRECTION.RIGHT;
+	this.angle = 0;
+	this.bullets = new BulletHandler(10,this.stage);
 }
 Soldat.prototype = {
 	init: function(under,over) {
 		this.images.over =over;
 		this.images.under = under;
 		this.build.call(this);
+
+
 	},
 	build: function() {
 		//	Create sprites for runing , standing , walking (12 x 3)
 		var underSprite = new createjs.SpriteSheet({
 	  		images: [this.images.under],
-	  		frames: {width:31, height:20, regX:10, regY:10},
+	  		frames: {width:30, height:20, regX:10, regY:10},
 	  		animations: {
 	  			run: [0,5,"run",5],
 	  			idle: [6,8,"idle",20]
@@ -72,10 +72,17 @@ Soldat.prototype = {
 		this.soldier.y = 100;
 		this.soldier.vY = 0;
 		this.soldier.vX = 0;
+
+
+
 	},
 	getPos: function()
 	{
 		return {x:this.soldier.x,y:this.soldier.y};
+	},
+	getAngle: function()
+	{
+		return this.angle;
 	},
 	returnSoldier: function()
 	{
@@ -114,31 +121,30 @@ Soldat.prototype = {
 	},
 	run: function(dir) {
 		this.way = dir;
-		this.soldier.vX = 1.8;
+		this.soldier.vX = 2;
 		this.setDirection.call(this,"run");
 		//this.animations.under.gotoAndPlay("run");
 	},
 	reverse: function(dir) {
 		this.way = dir;
-		this.soldier.vX = 1.8;
+		this.soldier.vX = 1;
 		//this.setDirection.call(this,"run");
 		if(this.way == DIRECTION.LEFT) {
 
-			console.log("revse -90");
 
 			this.animations.under.gotoAndPlay("run");     //runing from left to right
 		}
 		else if (this.way == DIRECTION.RIGHT) {
 
-			console.log("reverse 90");
 			this.animations.under.gotoAndPlay("run_h");
 		}
 	},
 	jump:function(dir) {
-
-		this.way = dir;
-		console.log(this.way);
-		this.jumping = true;
+		if(!this.jumping){
+			this.weight.y = 8;
+			this.way = dir;
+			this.jumping = true;
+		}
 	},
 	shoot: function(dir) {
 		if(dir == DIRECTION.RIGHT) {
@@ -147,6 +153,13 @@ Soldat.prototype = {
 		else {
 			this.animations.over.gotoAndPlay("shoot_h");	
 		}
+
+
+		// create an bullet that will fire in right direction
+	//	console.log(this.bullets.length);
+
+		this.bullets.add(new Bullet());
+		this.bullets.last().fire(this.soldier.x,this.soldier.y,this.angle);
 	},
 	die: function(wayToDie) {
 		this.soldier.visible = false;
@@ -164,45 +177,56 @@ Soldat.prototype = {
 
 	    	if(angle < 0) { angle = 360 + angle; }
 
-	    	if(this.jumping == true) {
+	    	this.angle = angle;
+
+
+	    	var k = 0;
+	    	for(k =0; k < this.bullets.num; k++)
+	    	{
+	    		this.bullets.at(k).update(window.e.returnEnemy());
+	    	}
+
+	    	if(this.jumping == true || !Collision.platform(this.soldier, Map.platforms)) {
+	    		this.jumping = true;
 	    		this.weight.y = this.weight.y - 0.5;
 				this.soldier.y -= this.weight.y;
 	    	}
 
 	    	if(this.weight.y <= 0 && Collision.platform(this.soldier, Map.platforms)) {
-	    		this.weight.y = 8;
+	    		this.weight.y = 0;
 	    		this.jumping = false;
 	    	}
 
-	  		// OM musen är¨på vänster sida av soldaten  och  vi går åt höger
+	  		// OM musen Ã¤rÂ¨pÃ¥ vÃ¤nster sida av soldaten  och  vi gÃ¥r Ã¥t hÃ¶ger
 	    	if(this.stage.mouseX < this.soldier.x  && Key.isDown(Key.D) ==true) {
 	    			//this.idle.call(this,-90);
 	    			//
 	    			this.animations.over.rotation = angle +200;
 	    	}
-	    	// OM musen är på högersida av soldaten och vi går åt vänster
+	    	// OM musen Ã¤r pÃ¥ hÃ¶gersida av soldaten och vi gÃ¥r Ã¥t vÃ¤nster
 	    	else if(this.stage.mouseX > this.soldier.x && Key.isDown(Key.A) ==true) {
 	    			//this.idle.call(this,90);	
 	    			this.animations.over.rotation = angle -25;
 	    	}
-	    	// om musen är på vänster sida, och vi inte trycker på D
+	    	// om musen Ã¤r pÃ¥ vÃ¤nster sida, och vi inte trycker pÃ¥ D
 	    	else if(this.stage.mouseX < this.soldier.x  && Key.isDown(Key.D) === undefined) {
-	    		if(this.way != DIRECTION.LEFT) {// om vi inte redan är på vänster sida( byta ut mot enum)
+	    		if(this.way != DIRECTION.LEFT) {// om vi inte redan Ã¤r pÃ¥ vÃ¤nster sida( byta ut mot enum)
 	    			this.idle.call(this,DIRECTION.LEFT);
 	    			this.way = DIRECTION.LEFT;
 	    		}
 	    		this.animations.over.rotation = angle +200;
 	    	}
-	    	// OM musen är på höger sida och vi intetrycker på A
+	    	// OM musen Ã¤r pÃ¥ hÃ¶ger sida och vi intetrycker pÃ¥ A
 	    	else if(this.stage.mouseX > this.soldier.x && Key.isDown(Key.A) === undefined) {
 
-	    		if(this.way != DIRECTION.RIGHT) {// om vi inte redan är på höger sida
+	    		if(this.way != DIRECTION.RIGHT) {// om vi inte redan Ã¤r pÃ¥ hÃ¶ger sida
 	    			this.idle.call(this,DIRECTION.RIGHT);
 	    			this.way = DIRECTION.RIGHT;
 	    		}
 	    		//this.idle.call(this,90);    		
 	    		this.animations.over.rotation = angle -25;
 	    	}
+
 	    	if(!Collision.grid(this.soldier, this.way)){
 		    	this.move();
 		    }
