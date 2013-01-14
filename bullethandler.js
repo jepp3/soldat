@@ -12,7 +12,7 @@ BulletHandler.prototype = {
 	{
 		if(this.num == this.max)
 		{
-			num = 0;
+			this.num = 0;
 		}
 		this.bullets[this.num] = bullet;
 		this.bullets[this.num].init();

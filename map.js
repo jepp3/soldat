@@ -204,7 +204,11 @@
 							},
 							forest:{
 								url:"img/mission1/horizon_forest.png",
+// <<<<<<< HEAD
 								offset:{x:-1530, y:38},
+// =======
+// 								offset:{x:-1540, y:38},
+// >>>>>>> fa58880e13bbbb3017277f93903d460219c9cc7a
 								layer:"horizon",
 							}
 						};

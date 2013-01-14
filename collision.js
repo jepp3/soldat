@@ -63,7 +63,7 @@ THE SOFTWARE.
 			intersection = this.getIntersect(rect1, rect2);
 			// intersection.x = Math.abs(rect1.centerX - rect2.centerX) - (rect1.hw + rect2.hw);
 			// intersection.y = Math.abs(rect1.centerY - rect2.centerY) - (rect1.hh + rect2.hh);
-console.log(intersection);
+// console.log(intersection);
 			// Set the intersection if the objects intersect
 			if(intersection.x<0 && intersection.y<0){
 				intersection.width = Math.min(Math.min(boundsObj1.width,boundsObj2.width),-intersection.x);
@@ -91,8 +91,8 @@ console.log(intersection);
 			this.collisionCanvas.height = this.collisionCanvas2.height = intersection.height;
 
 			// Get the intersecting image-part from the bitmaps
-			imageData1 = this._intersectingImagePart.call(this, intersection, object1, this.collisionCtx);
-			imageData2 = this._intersectingImagePart.call(this, intersection, object2, this.collisionCtx2);
+			imageData1 = this._intersectingImagePart(intersection, object1, this.collisionCtx);
+			imageData2 = this._intersectingImagePart(intersection, object2, this.collisionCtx2);
 
 			// Compair alpha values for collision
 			pixelIntersection = this._intersectingAlphaPart.call(this, imageData1,imageData2,intersection.width,intersection.height,alpha)
@@ -103,7 +103,7 @@ console.log(intersection);
 			    pixelIntersection.x2 += intersection.x;
 			    pixelIntersection.y += intersection.y;
 			    pixelIntersection.y2 += intersection.y;
-
+// console.log(pixelIntersection)
 			    return pixelIntersection;
 			}
 
@@ -163,7 +163,9 @@ console.log(intersection);
 					}else{
 						return bounds;
 					}
-				}else{
+				}
+				else{
+					// console.log("something else");
 					return bounds;
 				}
 
@@ -194,11 +196,10 @@ console.log(intersection);
 				}
 			}
 
-console.log(image);
 			bl = object.globalToLocal(intersection.x, intersection.y);
 			ctx.restore();
 			ctx.clearRect(0,0,intersection.width,intersection.height);
-
+// console.log()
 			ctx.translate(-bl.x, -bl.y);
 			ctx.drawImage(image,0,0,image.width,image.height);
 			return ctx.getImageData(0,0,intersection.width,intersection.height).data;
@@ -268,9 +269,9 @@ console.log(image);
 
 			return false;
 		},
-		platform: function(character, platforms){
+		platform: function(object, platforms){
 			// console.log(character);
-			var	character = character.clone(true),
+			var	obj = object.clone(true),
 				hitArea,
 				bitmap,
 				collision = false;
@@ -280,13 +281,37 @@ console.log(image);
 				// hitarea.x += 5;
 				// hitarea.y -= 26;
 				// bitmap = this._intersectingImagePart.call(this, hitarea, boundsChar, this.collisionCtx);
-			character.x = window.s.soldier.vX;
-			character.y = window.s.weight.y -0.5;
+			// obj.x = object.vX || object.x;//window.s.soldier.vX;
+			// obj.y = object.vX || object.x;//window.s.weight.y -0.5;
+// console.log()
+			var compare = object;
+			if(object instanceof createjs.Container)
+			{
+				compare =  object.getChildAt(0);
+			}
+			var boundsChar = this.getBounds.call(this,compare),
+				hitArea,
+				bitmap;
 
+				// hitarea = boundsChar;
+				// hitarea.width -=10;
+				// hitarea.height = 5;
+				// hitarea.x += 5;
+				// hitarea.y -= 26;
+				// bitmap = this._intersectingImagePart.call(this, hitarea, boundsChar, this.collisionCtx);
+
+
+			// console.log(bitmap)
 			for(var i=0; i<platforms.getNumChildren(); i++)
 			{
-				if(collision = this.checkCollision(character, platforms.getChildAt(i))){
+// <<<<<<< HEAD
+				if(collision = this.checkCollision(compare, platforms.getChildAt(i))){
+					// console.log(collision)
 					return collision;
+// =======
+// 				if(this.checkCollision(compare, platforms.getChildAt(i))){
+// 					return true;
+// >>>>>>> fa58880e13bbbb3017277f93903d460219c9cc7a
 				}
 			}
 			// console.log(collision)

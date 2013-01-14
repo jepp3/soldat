@@ -5,11 +5,12 @@
 **/
 "use strict";
 
-var downNow = false, canvas, stage, numberOfImages = 0, totalNumberOfImages = 2,
+var downNow = false, canvas, stage, numberOfImages = 0, totalNumberOfImages = 3,
 screen_width =0, screen_height = 0;
 var images = {
 	over: new Image(),
-	under: new Image()
+	under: new Image(),
+	shieldEnemy: new Image()
 };
 
 // when the dom has loaded, invoke the preparations funktions,
@@ -30,10 +31,26 @@ $(document).ready(function() {
 		window.s = new Soldat(stage);
 		window.s.init(images.under,images.over);
 
-		stage.addChild(window.s.returnSoldier());
-		Map.addForgorund();
-	
 
+
+		window.e = new ShieldEnemy(stage,"s");
+		window.e.init(images.shieldEnemy);
+
+		window.e.setPos(400,120);
+
+
+		window.b = new Bullet();
+		window.b.init();
+		stage.addChild(window.b.returnBullet());
+		
+		
+
+
+		stage.addChild(window.s.returnSoldier());
+		stage.addChild(window.e.returnEnemy());
+		stage.addChild(window.b.returnBullet());
+		Map.addForgorund();
+		
 		createjs.Ticker.addListener(tick);
 	    createjs.Ticker.useRAF = true;
 	    createjs.Ticker.setFPS(90);
@@ -69,31 +86,13 @@ $(document).ready(function() {
 	  		// update soldier
 	  		// s.update();
 	  		window.s.update();
-	  		// if(s.mode == "run"){
-	  		//	s.update();
+	  	//	window.b.setPos(stage.mouseX,stage.mouseY);
+	  //		window.b.setDestination(stage.mouseX,stage.mouseY);
 
-	  			// if(s.direction == 90 && s.animation.x > canvas.width*.25) {
-	  			// 	// Right movements
-	  			// 	if(map.background.regX + canvas.width*.5 < map.iMap.width)
-			  	// 		map.background.regX += s.animation.vX;
-			  	// 	else{
-			  	// 		if(s.animation.x < canvas.width*.5 - 16)
-			  	// 			s.update();
-			  	// 	}
-	  			// }else if(s.direction == -90 && s.animation.x < canvas.width*.05){
-	  			// 	// Left movements
-	  			// 	if(map.background.regX > 0)
-		  		// 		map.background.regX -= s.animation.vX;
-		  		// 	else{
-		  		// 		if(s.animation.x > 16)
-		  		// 			s.update();
-		  		// 	}
-	  			// }else {
-	  			// 	s.update();
-	  			// }
-	  		// }
-
-	  		// update stage (container)
+	  		var g = window.e.getPos();
+	  		window.b.update(window.e.returnEnemy());
+	  		window.e.ai(window.s.getPos());
+	  		
 	        stage.update();
 	}
 	/**
@@ -117,6 +116,11 @@ $(document).ready(function() {
 		images.under.src = "img/under.png";
 		images.under.onerror = handleImageError;
 		images.under.onload  = gameLoader;
+
+
+		images.shieldEnemy.src = "img/sheild_run.png";
+		images.shieldEnemy.onerror = handleImageError;
+		images.shieldEnemy.onload = gameLoader;
 		//startGame();
 		var jumping = false;
 
@@ -178,16 +182,21 @@ $(document).ready(function() {
 			{
 				window.s.jump(window.s.getCurrentDirection());
 				jumping = true;
-				console.log("SPACE");
+		//		console.log("SPACE");
 			}
 		},	false);
 
 		canvas.onclick = function(){
 			var soldierPos = window.s.getPos();
+	//		var p = window.s.getPos();
+	//		var angle = window.s.getAngle();
+	//		window.b.fire(p.x,p.y,angle);
 
 			if(soldierPos.x > stage.mouseX)
 			{
+
 				window.s.shoot(DIRECTION.LEFT);
+				
 			}
 			else
 			{
