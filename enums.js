@@ -1,0 +1,12 @@
+var MODE = {
+  IDLE:0,
+	RUNNING:1,
+	STABBING:2,
+	SHOOTING:3,
+	PROTECTING:4,
+	DEAD:5
+}
+var DIRECTION = {
+	LEFT: 0,
+	RIGHT: 1
+};
