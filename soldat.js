@@ -183,12 +183,6 @@ Soldat.prototype = {
 // this.soldier.vY = this.soldier.weight.y;
 // this.solider.vX = this.solider.weight.x;
 
-	    	var k = 0;
-	    	for(k =0; k < this.bullets.num; k++)
-	    	{
-	    		this.bullets.at(k).update(window.e.returnEnemy());
-	    	}
-
 	    	if(this.jumping == true || !Collision.platform(this.soldier, Map.platforms)) {
 	    		this.jumping = true;
 	    		this.soldier.weight.y = this.soldier.weight.y - 0.5;

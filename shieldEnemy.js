@@ -8,6 +8,7 @@ function ShieldEnemy(stage,id)
 	this.ammo = 0;
 	this.ground = 0;
 	this.oldDir = null;
+	this.countOnDead = 0;
 }
 ShieldEnemy.prototype = new Enemy;
 ShieldEnemy.prototype.init = function(image)
@@ -26,7 +27,7 @@ ShieldEnemy.prototype.init = function(image)
 				shoot:[32,38,"shoot",4],
 				protecting:[0,11,"protecting",4],
 				stabbing:[12,29,"stabbing",4],
-				dead:[38,48,"run",4]
+				dead:[38,50,"",4]
 			}
 		});
 
@@ -54,6 +55,10 @@ ShieldEnemy.prototype.init = function(image)
 	/*
 	* These functions are used by ai
 	*/
+ShieldEnemy.prototype.dead = function()
+{
+	console.log("called");
+}
 ShieldEnemy.prototype.run = function(dir)
 {
 		this.animation.vX = 1.3;
@@ -133,9 +138,11 @@ ShieldEnemy.prototype.protect =  function(dir)
 };
 ShieldEnemy.prototype.die = function(dir)
 {
+
 		this.damage = 30;
 		this.animation.vX = 1;
 		this.mode = MODE.DEAD;
+		this.life = 0;
 		if(dir == DIRECTION.RIGHT)
 		{
 			this.animation.gotoAndPlay("dead");
@@ -147,6 +154,8 @@ ShieldEnemy.prototype.die = function(dir)
 };
 ShieldEnemy.prototype.ai =  function(target)
 {
+	if(this.life > 0)
+	{
 			// om soldaten koliderar , 
 			var offset = 25; 
 			var distance = 0;
@@ -154,17 +163,17 @@ ShieldEnemy.prototype.ai =  function(target)
 			var acceptangle = {min:0,max:0};
 
 			this.animation.y-=offset;
-			if(Collision.platform(this.animation,Map.platforms) == true)
+			if(Collision.platform(this.animation,Map.platforms))
 			{
 	//			console.log("Collision");
-				this.animation.y-=1; // höj soldaten lite , om vi fortfarande är under marken, icke bra
+				this.animation.y-=3; // höj soldaten lite , om vi fortfarande är under marken, icke bra
 				if(Collision.platform(this.animation,Map.platforms) == false)
 				{
 					// om vi hamnar här så ligger gubben i perfekt höjd och vi ändrar tillbaka höjden
 					// hamnar vi inte här, så är vi väldigt långt ner.. detta körs i tick så vi kommer hella tiden höja med 4
 					// tills vi hamnar där vi vill. 
 	//				console.log("jumping back");
-					this.animation.y+=1;
+					this.animation.y+=3;
 				}
 			} 
 			else
@@ -208,9 +217,7 @@ ShieldEnemy.prototype.ai =  function(target)
 			}
 			else if(distance <= 20 && this.mode != MODE.STABBING)
 			{
-
 				this.stabb.call(this,this.way);
-		
 			}
 			else if(this.mode == MODE.SHOOTING)
 			{
@@ -233,6 +240,6 @@ ShieldEnemy.prototype.ai =  function(target)
 		{
 			this.move();
 		}
-
+	}
 };
 

@@ -6,7 +6,7 @@
 "use strict";
 
 var downNow = false, canvas, stage, numberOfImages = 0, totalNumberOfImages = 3,
-screen_width =0, screen_height = 0;
+screen_width =0, screen_height = 0,enemies = new Array();
 var images = {
 	over: new Image(),
 	under: new Image(),
@@ -33,22 +33,20 @@ $(document).ready(function() {
 
 
 
-		window.e = new ShieldEnemy(stage,"s");
-		window.e.init(images.shieldEnemy);
+		enemies[0] = new ShieldEnemy(stage,"0");
+		enemies[0].init(images.shieldEnemy);
+		enemies[0].setPos(400,120);
 
-		window.e.setPos(400,120);
-
-
-		window.b = new Bullet();
-		window.b.init();
-		stage.addChild(window.b.returnBullet());
-		
+		enemies[1] = new ShieldEnemy(stage,"1");
+		enemies[1].init(images.shieldEnemy);
+		enemies[1].setPos(300,120);
 		
 
 
 		stage.addChild(window.s.returnSoldier());
-		stage.addChild(window.e.returnEnemy());
-		stage.addChild(window.b.returnBullet());
+		stage.addChild(enemies[0].returnEnemy());
+		stage.addChild(enemies[1].returnEnemy());
+
 		Map.addForgorund();
 		
 		createjs.Ticker.addListener(tick);
@@ -78,6 +76,19 @@ $(document).ready(function() {
 	  	createjs.Ticker.removeAllListeners();
 	  	stage.update();
 	}
+
+
+	function resetEnemy(index)
+	{
+		console.log("reset enemy"+index);
+		stage.removeChild(enemies[index].returnEnemy());
+		enemies[index] = new ShieldEnemy(stage,""+index);
+		enemies[index].init(images.shieldEnemy);
+		stage.addChild(enemies[index].returnEnemy());
+
+		enemies[index].setPos(Math.floor((Math.random()*500)+200),120);
+	}
+
 	/*
 	*	This is the game loop that runs in x fps. 
 	*/
@@ -89,9 +100,36 @@ $(document).ready(function() {
 	  	//	window.b.setPos(stage.mouseX,stage.mouseY);
 	  //		window.b.setDestination(stage.mouseX,stage.mouseY);
 
-	  		var g = window.e.getPos();
-	  		window.b.update(window.e.returnEnemy());
-	  		window.e.ai(window.s.getPos());
+			var i = 0;
+			for(i = 0; i < enemies.length;i++)
+			{
+	  			window.enemies[i].ai(window.s.getPos());
+	  		}
+
+
+
+	  		// take the soldiers bullets , and check if they hit anything
+
+
+	    	var i = 0;
+	    	for(i =0; i < window.s.bullets.num; i++)
+	    	{
+	    		var j = 0;
+	    		for(j = 0; j < enemies.length; j++)
+	    		{
+	    			if(window.s.bullets.at(i).update(enemies[j].returnEnemy()))
+	    			{
+	    				//console.log("bulet hit enemy");
+	    				enemies[j].die(enemies[j].way);
+	    				
+	    				setTimeout(resetEnemy, 800, j);
+	    				//stage.removeChild(enemies[j].returnEnemy());
+	    			}
+	    		}
+	    		
+	    	}
+
+	  		
 	  		
 	        stage.update();
 	}
