@@ -47,19 +47,23 @@ THE SOFTWARE.
 				rect2 = {};
 
 			// Get the bounderys for the objects
-			boundsObj1 = this.getBounds.call(this,object1);
-			boundsObj2 = this.getBounds.call(this,object2);
+			boundsObj1 = this.getBounds(object1);
+			boundsObj2 = this.getBounds(object2);
 
 			// Calculate the center of the objects
-			rect1.centerX = boundsObj1.x + (rect1.hw = (boundsObj1.width/2));
-			rect1.centerY = boundsObj1.y + (rect1.hh = (boundsObj1.height/2));
-			rect2.centerX = boundsObj2.x + (rect2.hw = (boundsObj2.width/2));
-			rect2.centerY = boundsObj2.y + (rect2.hh = (boundsObj2.height/2));
+			rect1 = this.getCenter(boundsObj1);
+			rect2 = this.getCenter(boundsObj2);
+// console.log(rect1)
+			// rect1.centerX = boundsObj1.x + (rect1.hw = (boundsObj1.width/2));
+			// rect1.centerY = boundsObj1.y + (rect1.hh = (boundsObj1.height/2));
+			// rect2.centerX = boundsObj2.x + (rect2.hw = (boundsObj2.width/2));
+			// rect2.centerY = boundsObj2.y + (rect2.hh = (boundsObj2.height/2));
 
 			// Calculate the center of the intersection
-			intersection.x = Math.abs(rect1.centerX - rect2.centerX) - (rect1.hw + rect2.hw);
-			intersection.y = Math.abs(rect1.centerY - rect2.centerY) - (rect1.hh + rect2.hh);
-
+			intersection = this.getIntersect(rect1, rect2);
+			// intersection.x = Math.abs(rect1.centerX - rect2.centerX) - (rect1.hw + rect2.hw);
+			// intersection.y = Math.abs(rect1.centerY - rect2.centerY) - (rect1.hh + rect2.hh);
+console.log(intersection);
 			// Set the intersection if the objects intersect
 			if(intersection.x<0 && intersection.y<0){
 				intersection.width = Math.min(Math.min(boundsObj1.width,boundsObj2.width),-intersection.x);
@@ -68,6 +72,14 @@ THE SOFTWARE.
 				intersection.y = Math.max(boundsObj1.y,boundsObj2.y);
 			}else{
 				return false;
+			}
+
+			// Get the intersected bitmap from containers
+			if(object1 instanceof createjs.Container) {
+				object1 = this.getBitmap(object1, intersection);
+			}
+			if(object2 instanceof createjs.Container) {
+				object2 = this.getBitmap(object2, intersection);
 			}
 
 			// Get the lowest alpha value (least transparent)
@@ -91,9 +103,40 @@ THE SOFTWARE.
 			    pixelIntersection.x2 += intersection.x;
 			    pixelIntersection.y += intersection.y;
 			    pixelIntersection.y2 += intersection.y;
+
+			    return pixelIntersection;
 			}
 
-			return pixelIntersection;
+			return false;
+		},
+		getCenter: function(boundsObj){
+			var rect = {};
+			// console.log(boundsObj)
+			// Calculate the center of the objects
+			rect.centerX = boundsObj.x + (rect.hw = (boundsObj.width/2));
+			rect.centerY = boundsObj.y + (rect.hh = (boundsObj.height/2));
+
+			return rect;
+		},
+		getIntersect: function(rect1, rect2){
+			var intersection = {};
+
+			// Calculate the center of the intersection
+			intersection.x = Math.abs(rect1.centerX - rect2.centerX) - (rect1.hw + rect2.hw);
+			intersection.y = Math.abs(rect1.centerY - rect2.centerY) - (rect1.hh + rect2.hh);
+
+			// if(intersection.x<0 && intersection.y<0)
+			return intersection;
+			// return null;
+		},
+		getBitmap: function(object, intersection){
+			var objectBounds1;
+
+			for(i in object.children){
+				objectBounds = this.getBounds(object.getChildAt(i));
+				return object.getChildAt(i);
+		}
+			return false;
 		},
 		getBounds: function(object){
 			var bounds={x:Infinity,y:Infinity,width:0,height:0};
@@ -102,11 +145,12 @@ THE SOFTWARE.
 				var children = object.children, l=children.length, cbounds, c;
 
 				for(c=0; c<l; c++){
-					cbounds = this.getBounds(this,children[c]);
+					cbounds = this.getBounds(children[c]);
 					if(cbounds.x < bounds.x) bounds.x = cbounds.x;
 					if(cbounds.y < bounds.y) bounds.y = cbounds.y;
 					if(cbounds.width > bounds.width) bounds.width = cbounds.width;
 					if(cbounds.height > bounds.height) bounds.height = cbounds.height;
+
 				}
 			}else{
 				var gp, gp2, gp3, gp4, imgr;
@@ -141,6 +185,7 @@ THE SOFTWARE.
 			if(object instanceof createjs.Bitmap){
 				image = object.image;
 			}else if(object instanceof createjs.BitmapAnimation){
+
 				frame = object.currentFrame+object.spriteSheet.getFrame(object.currentFrame).image.src;
 				if(this.cachedBAFrames[frame]){
 					image = this.cachedBAFrames[frame];
@@ -149,7 +194,7 @@ THE SOFTWARE.
 				}
 			}
 
-
+console.log(image);
 			bl = object.globalToLocal(intersection.x, intersection.y);
 			ctx.restore();
 			ctx.clearRect(0,0,intersection.width,intersection.height);
@@ -184,24 +229,34 @@ THE SOFTWARE.
 			return null;
 		},
 		grid: function(player, direction){
+			var y = 0;
+// console.log(Map.backgrounds.getChildAt(2).regX)
 			if(direction == DIRECTION.RIGHT && player.x > canvas.width/2){
 				// Right movements
-				if(Map.background.regX + canvas.width < Map.iMap.background.width){
-					Map.background.regX += player.vX;
-					Map.platforms.getChildAt(0).regX += player.vX;
+				if(Map.backgrounds.getChildAt(2).regX + canvas.width < Map.images.bitmaps.background.width){
+					// Map.background.regX += player.vX;
+					// Map.platforms.getChildAt(0).regX += player.vX;
+					// if(player.vX > 0) console.log(player.vX)
+					if(Map.backgrounds.getChildAt(2).regX + canvas.width > 3500 && Map.backgrounds.getChildAt(2).regX + canvas.width < 3951){
+						y = -player.vX/4;
+					}
+					Map.update(player.vX, y);
 					return true;
 				}else{
 		  			if(player.x < canvas.width - 16){
-		  				console.log(player.x)
 		  				return false;
 		  			}
 		  			return true;
 		  		}
 			}else if(direction == DIRECTION.LEFT && player.x < canvas.width/10){
 				// Left movements
-  				if(Map.background.regX > 0){
-	  				Map.background.regX -= player.vX;
-	  				Map.platforms.getChildAt(0).regX -= player.vX;
+  				if(Map.backgrounds.getChildAt(2).regX > 0){
+  					if(Map.backgrounds.getChildAt(2).regX + canvas.width < 3951 && Map.backgrounds.getChildAt(2).regX + canvas.width > 3500){
+  						y = player.vX/4;
+  					}
+					Map.update(-player.vX, y);
+	  				// Map.background.regX -= player.vX;
+	  				// Map.platforms.getChildAt(0).regX -= player.vX;
 	  				return true;
 	  			}
 	  			else{
@@ -214,14 +269,28 @@ THE SOFTWARE.
 			return false;
 		},
 		platform: function(character, platforms){
+			// console.log(character);
+			var	character = character.clone(true),
+				hitArea,
+				bitmap,
+				collision = false;
+				// hitarea = boundsChar;
+				// hitarea.width -=10;
+				// hitarea.height = 5;
+				// hitarea.x += 5;
+				// hitarea.y -= 26;
+				// bitmap = this._intersectingImagePart.call(this, hitarea, boundsChar, this.collisionCtx);
+			character.x = window.s.soldier.vX;
+			character.y = window.s.weight.y -0.5;
 
 			for(var i=0; i<platforms.getNumChildren(); i++)
 			{
-				if(this.checkCollision(character.getChildAt(0), platforms.getChildAt(i))){
-					return true;
+				if(collision = this.checkCollision(character, platforms.getChildAt(i))){
+					return collision;
 				}
 			}
-			return false;
+			// console.log(collision)
+			return collision;
 		}
 	}
 	window.Collision = new Collision();

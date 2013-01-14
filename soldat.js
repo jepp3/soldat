@@ -25,7 +25,7 @@ Soldat.prototype = {
 		//	Create sprites for runing , standing , walking (12 x 3)
 		var underSprite = new createjs.SpriteSheet({
 	  		images: [this.images.under],
-	  		frames: {width:31, height:20, regX:10, regY:10},
+	  		frames: {width:30, height:20, regX:10, regY:10},
 	  		animations: {
 	  			run: [0,5,"run",5],
 	  			idle: [6,8,"idle",20]
@@ -104,7 +104,7 @@ Soldat.prototype = {
         else {
           	this.soldier.x -= this.soldier.vX;
            this.soldier.y -= this.soldier.vY;
-        }	    	
+        }
 	},
 	idle: function(dir) {
 		this.way = dir;
@@ -114,7 +114,7 @@ Soldat.prototype = {
 	},
 	run: function(dir) {
 		this.way = dir;
-		this.soldier.vX = 1.8;
+		this.soldier.vX = 1.8*5;
 		this.setDirection.call(this,"run");
 		//this.animations.under.gotoAndPlay("run");
 	},
@@ -124,21 +124,20 @@ Soldat.prototype = {
 		//this.setDirection.call(this,"run");
 		if(this.way == DIRECTION.LEFT) {
 
-			console.log("revse -90");
 
 			this.animations.under.gotoAndPlay("run");     //runing from left to right
 		}
 		else if (this.way == DIRECTION.RIGHT) {
 
-			console.log("reverse 90");
 			this.animations.under.gotoAndPlay("run_h");
 		}
 	},
 	jump:function(dir) {
-
-		this.way = dir;
-		console.log(this.way);
-		this.jumping = true;
+		if(!this.jumping){
+			this.weight.y = 8;
+			this.way = dir;
+			this.jumping = true;
+		}
 	},
 	shoot: function(dir) {
 		if(dir == DIRECTION.RIGHT) {
@@ -164,13 +163,15 @@ Soldat.prototype = {
 
 	    	if(angle < 0) { angle = 360 + angle; }
 
-	    	if(this.jumping == true) {
+	    	if(this.jumping == true|| !Collision.platform(this.soldier, Map.platforms)) {
+	    		this.jumping = true;
 	    		this.weight.y = this.weight.y - 0.5;
-				this.soldier.y -= this.weight.y;
+				// this.soldier.y -= this.weight.y;
+				this.soldier.vY = this.weight.y;
 	    	}
 
 	    	if(this.weight.y <= 0 && Collision.platform(this.soldier, Map.platforms)) {
-	    		this.weight.y = 8;
+	    		this.weight.y = 0;
 	    		this.jumping = false;
 	    	}
 
@@ -203,9 +204,20 @@ Soldat.prototype = {
 	    		//this.idle.call(this,90);    		
 	    		this.animations.over.rotation = angle -25;
 	    	}
+
 	    	if(!Collision.grid(this.soldier, this.way)){
 		    	this.move();
 		    }
 	    }
 	}
+	// ,
+ //    collision: function(){
+ //    	var collision = Collision.platform(this.soldier, Map.platforms);
+
+ //    	if(collision){
+ //    		this.soldier.x -= collision.width;
+ //    		this.soldier.y -= collision.height;
+	//     	console.log(collision);
+	//     }
+ //    }
 }

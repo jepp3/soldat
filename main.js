@@ -31,7 +31,7 @@ $(document).ready(function() {
 		window.s.init(images.under,images.over);
 
 		stage.addChild(window.s.returnSoldier());
-		Map.addForegorund();
+		Map.addForgorund();
 	
 
 		createjs.Ticker.addListener(tick);
