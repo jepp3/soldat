@@ -119,7 +119,9 @@ THE SOFTWARE.
 					}else{
 						return bounds;
 					}
-				}else{
+				}
+				else{
+					console.log("something else");
 					return bounds;
 				}
 
@@ -184,24 +186,34 @@ THE SOFTWARE.
 			return null;
 		},
 		grid: function(player, direction){
+			var y = 0;
+// console.log(Map.backgrounds.getChildAt(2).regX)
 			if(direction == DIRECTION.RIGHT && player.x > canvas.width/2){
 				// Right movements
-				if(Map.background.regX + canvas.width < Map.iMap.background.width){
-					Map.background.regX += player.vX;
-					Map.platforms.getChildAt(0).regX += player.vX;
+				if(Map.backgrounds.getChildAt(2).regX + canvas.width < Map.images.bitmaps.background.width){
+					// Map.background.regX += player.vX;
+					// Map.platforms.getChildAt(0).regX += player.vX;
+					// if(player.vX > 0) console.log(player.vX)
+					if(Map.backgrounds.getChildAt(2).regX + canvas.width > 3500 && Map.backgrounds.getChildAt(2).regX + canvas.width < 3951){
+						y = -player.vX/4;
+					}
+					Map.update(player.vX, y);
 					return true;
 				}else{
 		  			if(player.x < canvas.width - 16){
-		  				console.log(player.x)
 		  				return false;
 		  			}
 		  			return true;
 		  		}
 			}else if(direction == DIRECTION.LEFT && player.x < canvas.width/10){
 				// Left movements
-  				if(Map.background.regX > 0){
-	  				Map.background.regX -= player.vX;
-	  				Map.platforms.getChildAt(0).regX -= player.vX;
+  				if(Map.backgrounds.getChildAt(2).regX > 0){
+  					if(Map.backgrounds.getChildAt(2).regX + canvas.width < 3951 && Map.backgrounds.getChildAt(2).regX + canvas.width > 3500){
+  						y = player.vX/4;
+  					}
+					Map.update(-player.vX, y);
+	  				// Map.background.regX -= player.vX;
+	  				// Map.platforms.getChildAt(0).regX -= player.vX;
 	  				return true;
 	  			}
 	  			else{
@@ -215,9 +227,27 @@ THE SOFTWARE.
 		},
 		platform: function(character, platforms){
 
+			var compare = character;
+			if(character instanceof createjs.Container)
+			{
+				compare =  character.getChildAt(0);
+			}
+			var boundsChar = this.getBounds.call(this,compare),
+				hitArea,
+				bitmap;
+
+				// hitarea = boundsChar;
+				// hitarea.width -=10;
+				// hitarea.height = 5;
+				// hitarea.x += 5;
+				// hitarea.y -= 26;
+				// bitmap = this._intersectingImagePart.call(this, hitarea, boundsChar, this.collisionCtx);
+
+
+			// console.log(bitmap)
 			for(var i=0; i<platforms.getNumChildren(); i++)
 			{
-				if(this.checkCollision(character.getChildAt(0), platforms.getChildAt(i))){
+				if(this.checkCollision(compare, platforms.getChildAt(i))){
 					return true;
 				}
 			}
