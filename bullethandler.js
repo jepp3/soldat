@@ -1,6 +1,5 @@
 function BulletHandler (max,stage) {
-
-  this.num = 0;
+ 	this.num = 0;
 	this.bullets = new Array();
 	this.max = max; 
 	this.stage = stage;
@@ -30,7 +29,7 @@ BulletHandler.prototype = {
 	},
 	last: function()
 	{
-		console.log(this.bullets)
+		
 		return this.bullets[this.num-1];
 	}
 }

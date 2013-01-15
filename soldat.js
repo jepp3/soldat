@@ -27,8 +27,8 @@ Soldat.prototype = {
 	  		images: [this.images.under],
 	  		frames: {width:30, height:20, regX:10, regY:10},
 	  		animations: {
-	  			run: [0,5,"run",5],
-	  			idle: [6,8,"idle",20]
+	  			run: [0,5,"run",2],
+	  			idle: [6,8,"idle",4]
 	  		}
 		});
 
@@ -121,7 +121,6 @@ Soldat.prototype = {
 	},
 	run: function(dir) {
 		this.way = dir;
-
 		this.soldier.vX = 2*8;
 		this.setDirection.call(this,"run");
 		//this.animations.under.gotoAndPlay("run");
@@ -131,8 +130,6 @@ Soldat.prototype = {
 		this.soldier.vX = 1;
 		//this.setDirection.call(this,"run");
 		if(this.way == DIRECTION.LEFT) {
-
-
 			this.animations.under.gotoAndPlay("run");     //runing from left to right
 		}
 		else if (this.way == DIRECTION.RIGHT) {
@@ -154,13 +151,9 @@ Soldat.prototype = {
 		else {
 			this.animations.over.gotoAndPlay("shoot_h");	
 		}
-
-
-		// create an bullet that will fire in right direction
-	//	console.log(this.bullets.length);
-
 		this.bullets.add(new Bullet());
 		this.bullets.last().fire(this.soldier.x,this.soldier.y,this.angle);
+
 	},
 	die: function(wayToDie) {
 		this.soldier.visible = false;
