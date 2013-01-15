@@ -4,12 +4,15 @@
 		this.iLoaded = 0;
 		this.ready = false;
 		this.images = {};
+		this.width = 0;
+		this.height = 0;
 
 		this.platforms = new createjs.Container();
 		this.far_horizons = new createjs.Container();
 	    this.horizons = new createjs.Container();
 	    this.backgrounds = new createjs.Container();
 	    this.forground = new createjs.Container();
+	    // this.background = new Image();
 	};
 
 	Map.objects = {};
@@ -27,9 +30,9 @@
 				bitmap = new Image();
 				bitmap.src = this.images.bitmaps[i].url;
 				bitmap.onerror = handleImageError;
-				this.images.bitmaps[i].width = bitmap.width;
-				this.images.bitmaps[i].height = bitmap.height;
-
+				// this.images.bitmaps[i].width = bitmap.width;
+				// this.images.bitmaps[i].height = bitmap.height;
+console.log(bitmap.width)
 				bitmap.onload = this.addToLayer(new createjs.Bitmap(bitmap),
 						this.images.bitmaps[i].layer,
 						i,
@@ -49,7 +52,7 @@
 		    			this.images.animations[i].layer,
 		    			i,
 		    			this.images.animations[i].position);
-
+		    }
 		 	this.build.call(this);
 		},
 		addToLayer: function(object, layer, name, position){
@@ -136,6 +139,8 @@
 
 			switch(mission){
 			case "mission1":
+						this.width = 4153,
+						this.height = 240,
 						this.images.bitmaps = {
 							platform:{
 								url:"img/mission1/background_platform.png",
@@ -145,7 +150,7 @@
 							background:{
 								url:"img/mission1/background.png",
 								offset:{x:0,y:17},
-								layer:"background"
+								layer:"background",
 							},
 							forest:{
 								url:"img/mission1/horizon_forest.png",
