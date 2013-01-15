@@ -6,7 +6,7 @@
 "use strict";
 
 var downNow = false, canvas, stage, numberOfImages = 0, totalNumberOfImages = 3,
-screen_width =0, screen_height = 0,enemies = new Array(), p,scoreBoard;
+screen_width =0, screen_height = 0,enemies = new Array(), p,scoreBoard,label;
 var images = {
 	over: new Image(),
 	under: new Image(),
@@ -45,7 +45,7 @@ $(document).ready(function() {
 */
 
 
-
+		label = new Label(stage);
 
 		
 		p = new HealthBar(stage);	
@@ -67,7 +67,7 @@ $(document).ready(function() {
 		}
 
 
-
+	//	label.gameOver();
 
 		scoreBoard = new ScoreBoard(stage);
 		scoreBoard.init();
@@ -148,6 +148,7 @@ $(document).ready(function() {
 	  					if(p.health <= 0)
 	  					{
 	  						window.s.die("die");
+	  						label.gameOver();
 	  					}
 	  				}
 	  			}
