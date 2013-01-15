@@ -21,7 +21,7 @@ Bullet.prototype = {
 		this.shape = new createjs.Shape(this.g);
 		this.shape.x = 0;
 		this.shape.y = 0;
-		this.speed = 9;
+		this.speed = 7;
 		//console.log(this.shape);
 	},
 	setPos: function(x,y)

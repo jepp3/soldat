@@ -25,7 +25,7 @@ Soldat.prototype = {
 	  		images: [this.images.under],
 	  		frames: {width:30, height:20, regX:10, regY:10},
 	  		animations: {
-	  			run: [0,5,"run",2],
+	  			run: [0,5,"run",3],
 	  			idle: [6,8,"idle",4]
 	  		}
 		});
