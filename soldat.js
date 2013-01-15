@@ -217,6 +217,9 @@ Soldat.prototype = {
 	    		}
 	    		//this.idle.call(this,90);    		
 	    		this.animations.over.rotation = angle -25;
+
+
+	    	
 	    	}
 
 // console.log(this.soldier.x)

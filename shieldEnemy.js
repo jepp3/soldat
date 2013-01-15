@@ -208,6 +208,7 @@ ShieldEnemy.prototype.ai =  function(target)
 			else if(distance <= 20 && this.mode != MODE.STABBING)
 			{
 				this.stabb.call(this,this.way);
+					p.setHealth(0);
 			}
 			else if(this.mode == MODE.SHOOTING)
 			{
