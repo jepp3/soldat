@@ -49,7 +49,7 @@
 		    			this.images.animations[i].layer,
 		    			i,
 		    			this.images.animations[i].position);
-
+		    	}
 		 	this.build.call(this);
 		},
 		addToLayer: function(object, layer, name, position){
