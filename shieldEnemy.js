@@ -6,9 +6,9 @@ function ShieldEnemy(stage,id)
 	this.life = 10;
 	this.damage = 0;
 	this.ammo = 0;
-	this.ground = 0;
-	this.oldDir = null;
-	this.countOnDead = 0;
+
+
+	this.bullets = new BulletHandler(10,stage);
 }
 ShieldEnemy.prototype = new Enemy;
 ShieldEnemy.prototype.init = function(image)
@@ -21,13 +21,13 @@ ShieldEnemy.prototype.init = function(image)
 			images: [this.image],
 	  		frames: {width:55, height:49, regX:23, regY:24},
 			animations: {
-				run: [0,11,"run",4],
+				run: [0,11,"run",2],
 				idle: [28,28,"idle",4],
-				takingupgun: [28,31,"shoot",4],
-				shoot:[32,38,"shoot",4],
-				protecting:[0,11,"protecting",4],
-				stabbing:[12,29,"stabbing",4],
-				dead:[38,50,"",4]
+				takingupgun: [28,31,"shoot",2],
+				shoot:[32,38,"shoot",2],
+				protecting:[0,11,"protecting",2],
+				stabbing:[12,29,"stabbing",2],
+				dead:[38,50,"",2]
 			}
 		});
 
@@ -46,11 +46,12 @@ ShieldEnemy.prototype.init = function(image)
 		this.animation.vX = 0;
 		this.animation.x = 40;
 		this.animation.y = 30;
-		this.ground = this.animation+15;
+		
+
 
 		//this.animation.gotoAndPlay("run_h"); 
 		this.run();
-		this.oldDir = this.way;
+		
 };
 	/*
 	* These functions are used by ai
@@ -165,20 +166,14 @@ ShieldEnemy.prototype.ai =  function(target)
 			this.animation.y-=offset;
 			if(Collision.platform(this.animation,Map.platforms))
 			{
-	//			console.log("Collision");
 				this.animation.y-=3; // höj soldaten lite , om vi fortfarande är under marken, icke bra
 				if(Collision.platform(this.animation,Map.platforms) == false)
 				{
-					// om vi hamnar här så ligger gubben i perfekt höjd och vi ändrar tillbaka höjden
-					// hamnar vi inte här, så är vi väldigt långt ner.. detta körs i tick så vi kommer hella tiden höja med 4
-					// tills vi hamnar där vi vill. 
-	//				console.log("jumping back");
 					this.animation.y+=3;
 				}
 			} 
 			else
 			{
-	//			console.log("diving");
 				this.animation.y+=4;
 			}
 
@@ -186,20 +181,15 @@ ShieldEnemy.prototype.ai =  function(target)
 
 		
 		// if soldier is on left side, turn left (if not already in that direction)
-			if(parseInt(target.x) <= parseInt(this.animation.x))
+			if(target.x <= this.animation.x)
 			{
 				distance = this.animation.x - target.x;
 				this.way = DIRECTION.LEFT;
-				acceptangle.min = -190;
-				acceptangle.max = -140;
 			}
 			else
 			{
 				distance = target.x -this.animation.x;
 				this.way = DIRECTION.RIGHT;
-				acceptangle.min = 20;
-				acceptangle.max = 40;
-
 			}
 
 
@@ -221,7 +211,6 @@ ShieldEnemy.prototype.ai =  function(target)
 			}
 			else if(this.mode == MODE.SHOOTING)
 			{
-
 				// reloading function
 				this.ammo++;
 				if(this.ammo == 150)
@@ -230,7 +219,19 @@ ShieldEnemy.prototype.ai =  function(target)
 					this.shoot.call(this,this.way);	
 					this.ammo = 0;
 				}
+				else if(this.ammo % 20 == 0)
+				{
+					this.bullets.add(new Bullet());
 
+					if(this.way == DIRECTION.LEFT)
+					{
+						this.bullets.last().fire(this.animation.x-20,this.animation.y-5,180);
+					}
+					else
+					{
+						this.bullets.last().fire(this.animation.x+10,this.animation.y-5,0);	
+					}
+				}
 			}
 		if(target.y < (this.animation.y - 50) || target.y > (this.animation.y +50))
 		{

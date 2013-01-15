@@ -14,9 +14,9 @@ Bullet.prototype = {
 		this.g.setStrokeStyle();
 	
 		this.g.setStrokeStyle(1);
-		this.g.beginStroke(createjs.Graphics.getRGB(0,0,0));
-		this.g.beginFill(createjs.Graphics.getRGB(0,0,0));
-		this.g.drawCircle(0,0,1);
+		this.g.beginStroke(createjs.Graphics.getRGB(255,250,0));
+		this.g.beginFill(createjs.Graphics.getRGB(255,0,0));
+		this.g.drawCircle(0,0,1.5);
 
 		this.shape = new createjs.Shape(this.g);
 		this.shape.x = 0;
@@ -36,7 +36,7 @@ Bullet.prototype = {
 		this.shape.x = x;
 		this.angle = angle;
 		this.alive = true;
-		console.log("fire");
+	//	console.log("fire");
 	},
 	setSpeed: function(speed)
 	{
@@ -55,9 +55,9 @@ Bullet.prototype = {
 			 var pt = target.globalToLocal(this.shape.x, this.shape.y);
 	//		if (stage.mouseInBounds && child.hitTest(pt.x, pt.y)) { child.alpha = 1; } 
 	
-			// move the some degrees	
-
-			if (target.hitTest(pt.x, pt.y))
+			// move the some degrees		
+			//console.log(window.stage.x);
+			if (target.hitTest(pt.x+window.stage.x, pt.y+window.stage.y))
 			{
 				
 				this.alive = false;
