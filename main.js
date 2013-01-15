@@ -58,7 +58,7 @@ $(document).ready(function() {
 
 
 		var pos = window.s.getPos();
-		for(var k = 0; k < 3;k++)
+		for(var k = 0; k < 5;k++)
 		{
 			enemies[k] = new ShieldEnemy(stage,k+"");
 			enemies[k].init(images.shieldEnemy);
