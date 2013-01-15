@@ -33,21 +33,39 @@ $(document).ready(function() {
 
 
 
-		enemies[0] = new ShieldEnemy(stage,"0");
+		/*enemies[0] = new ShieldEnemy(stage,"0");
 		enemies[0].init(images.shieldEnemy);
 		enemies[0].setPos(400,120);
 
 		enemies[1] = new ShieldEnemy(stage,"1");
 		enemies[1].init(images.shieldEnemy);
 		enemies[1].setPos(300,120);
+
+
+*/
+
+
+
+
 		
 		p = new HealthBar(stage);	
 		p.init();
 		p.setHealth(100);
 
 		stage.addChild(window.s.returnSoldier());
-		stage.addChild(enemies[0].returnEnemy());
-		stage.addChild(enemies[1].returnEnemy());
+//		stage.addChild(enemies[0].returnEnemy());
+		//stage.addChild(enemies[1].returnEnemy());
+
+
+		var pos = window.s.getPos();
+		for(var k = 0; k < 3;k++)
+		{
+			enemies[k] = new ShieldEnemy(stage,k+"");
+			enemies[k].init(images.shieldEnemy);
+			stage.addChild(enemies[k].returnEnemy());
+			enemies[k].setPos(Math.floor((Math.random()*(pos.x+500))+(pos.x+200)),120);
+		}
+
 
 
 
@@ -96,8 +114,13 @@ $(document).ready(function() {
 		enemies[index] = new ShieldEnemy(stage,""+index);
 		enemies[index].init(images.shieldEnemy);
 		stage.addChild(enemies[index].returnEnemy());
+		var pos = window.s.getPos();
 
-		enemies[index].setPos(Math.floor((Math.random()*500)+200),120);
+
+	//	Math.floor((Math.random()*100)+1); 
+
+
+		enemies[index].setPos(Math.floor((Math.random()*(pos.x+500))+(pos.x+200)),120);
 	}
 
 	/*
@@ -124,8 +147,7 @@ $(document).ready(function() {
 
 	  					if(p.health <= 0)
 	  					{
-	  						window.s.dead = true;
-	  						console.log("dead");
+	  						window.s.die("die");
 	  					}
 	  				}
 	  			}
@@ -144,7 +166,8 @@ $(document).ready(function() {
 	    		{
 	    			if(window.s.bullets.at(i).update(enemies[j].returnEnemy()))
 	    			{
-	    				//console.log("bulet hit enemy");
+
+	    				console.log("bulet hit enemy");
 	    				enemies[j].die(enemies[j].way);
 	    				scoreBoard.addScore(20);
 	    				setTimeout(resetEnemy, 800, j);

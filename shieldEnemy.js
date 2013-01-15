@@ -179,8 +179,6 @@ ShieldEnemy.prototype.ai =  function(target)
 
 			this.animation.y+=offset;
 
-		
-		// if soldier is on left side, turn left (if not already in that direction)
 			if(target.x <= this.animation.x)
 			{
 				distance = this.animation.x - target.x;
@@ -191,7 +189,6 @@ ShieldEnemy.prototype.ai =  function(target)
 				distance = target.x -this.animation.x;
 				this.way = DIRECTION.RIGHT;
 			}
-
 
 			if(distance > 150 && this.mode != MODE.RUNNING )
 			{

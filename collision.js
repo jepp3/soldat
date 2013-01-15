@@ -234,7 +234,7 @@ THE SOFTWARE.
 // console.log(Map.backgrounds.getChildAt(2).regX)
 			if(direction == DIRECTION.RIGHT && player.x > canvas.width/2 + Math.abs(stage.x)){
 				// Right movements
-				console.log(window.M)
+		//		console.log(window.M)
 				if(Math.abs(stage.x) + canvas.width < Map.width){
 					Map.update(-player.vX, player.vX);
 				}else{

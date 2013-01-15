@@ -18,8 +18,6 @@ Soldat.prototype = {
 		this.images.over =over;
 		this.images.under = under;
 		this.build.call(this);
-
-
 	},
 	build: function() {
 		//	Create sprites for runing , standing , walking (12 x 3)
@@ -73,8 +71,6 @@ Soldat.prototype = {
 		this.soldier.vY = 0;
 		this.soldier.vX = 0;
 
-
-
 	},
 	getPos: function()
 	{
@@ -121,7 +117,7 @@ Soldat.prototype = {
 	},
 	run: function(dir) {
 		this.way = dir;
-		this.soldier.vX = 2*8;
+		this.soldier.vX = 2;
 		this.setDirection.call(this,"run");
 		//this.animations.under.gotoAndPlay("run");
 	},
@@ -156,7 +152,7 @@ Soldat.prototype = {
 
 	},
 	die: function(wayToDie) {
-		this.soldier.visible = false;
+		//this.soldier.isVisible = false;
 		this.dead = true;
 	},
 	update:function() {
@@ -173,8 +169,6 @@ Soldat.prototype = {
 
 
 	    	this.angle = angle;
-// this.soldier.vY = this.soldier.weight.y;
-// this.solider.vX = this.solider.weight.x;
 
 	    	if(this.jumping == true || !Collision.platform(this.soldier, Map.platforms)) {
 	    		this.jumping = true;
@@ -219,7 +213,7 @@ Soldat.prototype = {
 	    		this.animations.over.rotation = angle -25;
 
 
-	    	
+
 	    	}
 
 // console.log(this.soldier.x)
