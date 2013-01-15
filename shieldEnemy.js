@@ -140,18 +140,18 @@ ShieldEnemy.prototype.protect =  function(dir)
 ShieldEnemy.prototype.die = function(dir)
 {
 
+	if(this.mode != MODE.DEAD) {
 		this.damage = 30;
 		this.animation.vX = 1;
 		this.mode = MODE.DEAD;
 		this.life = 0;
-		if(dir == DIRECTION.RIGHT)
-		{
+		if(dir == DIRECTION.RIGHT) {
 			this.animation.gotoAndPlay("dead");
 		}
-		else
-		{
+		else {
 			this.animation.gotoAndPlay("dead_h");
 		}
+	}
 };
 ShieldEnemy.prototype.ai =  function(target)
 {
