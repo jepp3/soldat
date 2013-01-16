@@ -6,7 +6,7 @@
 "use strict";
 
 var downNow = false, manifest, preload, canvas, stage, mission, jumping,
-screen_width =0, screen_height = 0,enemies = new Array(), p,scoreBoard,label;
+screen_width =0, screen_height = 0,enemies = new Array(), p,scoreBoard;
 var images = {
 	over: new Image(),
 	under: new Image(),
@@ -43,7 +43,7 @@ var images = {
 		enemies[1].init();
 		enemies[1].setPos(300,120);
 */
-		label = new Label(stage);
+	//	label = new Label(stage);
 
 		
 		p = new HealthBar(stage);	
@@ -74,7 +74,7 @@ var images = {
 
 		Map.addForgorund();
 		
-
+		window.label.add();
 
 		// createjs.SoundJS.play("main");
 		createjs.Ticker.addListener(tick);
@@ -198,6 +198,8 @@ var images = {
 	function preparations()
 	{
 		stage = new createjs.Stage(canvas);
+		window.label = new Label(stage);
+
 		screen_width = canvas.width;
 		screen_height = canvas.height;
 
