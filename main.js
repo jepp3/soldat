@@ -6,7 +6,7 @@
 "use strict";
 
 var downNow = false, canvas, stage, numberOfImages = 0, totalNumberOfImages = 3,
-screen_width =0, screen_height = 0,enemies = new Array(), p,scoreBoard;
+screen_width =0, screen_height = 0,enemies = new Array();
 var images = {
 	over: new Image(),
 	under: new Image(),
@@ -33,33 +33,22 @@ $(document).ready(function() {
 
 
 
-		enemies[0] = new ShieldEnemy(stage,"0");
-		enemies[0].init(images.shieldEnemy);
-		enemies[0].setPos(400,120);
+		// enemies[0] = new ShieldEnemy(stage,"0");
+		// enemies[0].init(images.shieldEnemy);
+		// enemies[0].setPos(400,120);
 
-		enemies[1] = new ShieldEnemy(stage,"1");
-		enemies[1].init(images.shieldEnemy);
-		enemies[1].setPos(300,120);
+		// enemies[1] = new ShieldEnemy(stage,"1");
+		// enemies[1].init(images.shieldEnemy);
+		// enemies[1].setPos(300,120);
 		
-		p = new HealthBar(stage);	
-		p.init();
-		p.setHealth(100);
+
 
 		stage.addChild(window.s.returnSoldier());
-		stage.addChild(enemies[0].returnEnemy());
-		stage.addChild(enemies[1].returnEnemy());
-
-
-
-		scoreBoard = new ScoreBoard(stage);
-		scoreBoard.init();
-
+		// stage.addChild(enemies[0].returnEnemy());
+		// stage.addChild(enemies[1].returnEnemy());
 
 		Map.addForgorund();
 		
-
-
-
 		createjs.Ticker.addListener(tick);
 	    createjs.Ticker.useRAF = true;
 	    createjs.Ticker.setFPS(60);
@@ -91,7 +80,7 @@ $(document).ready(function() {
 
 	function resetEnemy(index)
 	{
-	//	console.log("reset enemy"+index);
+		console.log("reset enemy"+index);
 		stage.removeChild(enemies[index].returnEnemy());
 		enemies[index] = new ShieldEnemy(stage,""+index);
 		enemies[index].init(images.shieldEnemy);
@@ -111,24 +100,10 @@ $(document).ready(function() {
 	  	//	window.b.setPos(stage.mouseX,stage.mouseY);
 	  //		window.b.setDestination(stage.mouseX,stage.mouseY);
 
-			var i = 0,j = 0;
+			var i = 0;
 			for(i = 0; i < enemies.length;i++)
 			{
 	  			window.enemies[i].ai(window.s.getPos());
-	  			j = 0;
-	  			for(j = 0; j < window.enemies[i].bullets.num;j++)
-	  			{
-	  				if(window.enemies[i].bullets.at(j).update(window.s.returnSoldier()))
-	  				{
-	  					p.setHealth(p.health-5);
-
-	  					if(p.health <= 0)
-	  					{
-	  						window.s.dead = true;
-	  						console.log("dead");
-	  					}
-	  				}
-	  			}
 	  		}
 
 
@@ -136,26 +111,23 @@ $(document).ready(function() {
 	  		// take the soldiers bullets , and check if they hit anything
 
 
-	    	
+	    	var i = 0;
 	    	for(i =0; i < window.s.bullets.num; i++)
 	    	{
-	    		j = 0;
+	    		var j = 0;
 	    		for(j = 0; j < enemies.length; j++)
 	    		{
 	    			if(window.s.bullets.at(i).update(enemies[j].returnEnemy()))
 	    			{
 	    				//console.log("bulet hit enemy");
 	    				enemies[j].die(enemies[j].way);
-	    				scoreBoard.addScore(20);
+
 	    				setTimeout(resetEnemy, 800, j);
 	    				//stage.removeChild(enemies[j].returnEnemy());
 	    			}
 	    		}
 	    	}
-	        p.update();
-	        scoreBoard.update();
 	        stage.update();
-
 	}
 	/**
 	*	This is the "constructor" of the game. its the first function to be called.
@@ -258,7 +230,8 @@ $(document).ready(function() {
 			{
 
 				window.s.shoot(DIRECTION.LEFT);
-			//	console.log(stage.x)
+				// console.log(Math.abs(stage.x) + canvas.width/2) 
+				// console.log(window.s.soldier.x)
 			}
 			else
 			{

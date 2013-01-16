@@ -30,9 +30,7 @@
 				bitmap = new Image();
 				bitmap.src = this.images.bitmaps[i].url;
 				bitmap.onerror = handleImageError;
-				// this.images.bitmaps[i].width = bitmap.width;
-				// this.images.bitmaps[i].height = bitmap.height;
-console.log(bitmap.width)
+
 				bitmap.onload = this.addToLayer(new createjs.Bitmap(bitmap),
 						this.images.bitmaps[i].layer,
 						i,
@@ -53,6 +51,7 @@ console.log(bitmap.width)
 		    			i,
 		    			this.images.animations[i].position);
 		    }
+
 		 	this.build.call(this);
 		},
 		addToLayer: function(object, layer, name, position){
