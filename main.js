@@ -68,18 +68,29 @@ var images = {
 
 	//	label.gameOver();
 
+		Map.addForgorund();
 		scoreBoard = new ScoreBoard(stage);
 		scoreBoard.init();
 
-
-		Map.addForgorund();
 		
 		window.label.add();
-
+// endGame();
 		// createjs.SoundJS.play("main");
 		createjs.Ticker.addListener(tick);
 	    createjs.Ticker.useRAF = true;
 	    createjs.Ticker.setFPS(60);
+	}
+
+	function endGame()
+	{
+		// scoreBoard.x -= 100;
+		// scoreBoard.y += 50;
+		// 
+		createjs.SoundJS.stop("main");
+		createjs.SoundJS.play("co");
+		label.gameOver();
+
+		// ScoreBoard.txt.textAlign = "center";
 	}
 
 	/**

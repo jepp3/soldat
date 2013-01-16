@@ -12,6 +12,7 @@
 	    this.horizons = new createjs.Container();
 	    this.backgrounds = new createjs.Container();
 	    this.forground = new createjs.Container();
+	    this.bossDefeted = true;
 	    // this.background = new Image();
 	};
 
