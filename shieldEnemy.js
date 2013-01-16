@@ -185,18 +185,13 @@ ShieldEnemy.prototype.ai =  function(target)
 
 			if(this.timeToCheck % 10 == 0)
 			{
-
 				if(this.collision = Collision.platform(this.animation,Map.platforms))
 				{
-					// console.log(collision)
 					if(!this.collision){
 						this.animation.vY -= .5
-						// this.animation.y-=3; // höj soldaten lite , om vi fortfarande är under marken, icke bra
+
 					}
-						// if(Collision.platform(this.animation,Map.platforms) == false)
-					// {
-						this.animation.y-= this.animation.vY;
-					// }
+					this.animation.y-= this.animation.vY;
 				} 
 				else
 				{
@@ -232,9 +227,10 @@ ShieldEnemy.prototype.ai =  function(target)
 			{
 				this.protect.call(this,this.way);
 			}
-			else if(distance <= 20 && this.mode != MODE.STABBING)
+			else if(distance <= 20 && this.mode != MODE.STABBING && !(target.y < (this.animation.y - 50) || target.y > (this.animation.y +50)))
 			{
 				this.stabb.call(this,this.way);
+
 					p.setHealth(0);
 			}
 			else if(this.mode == MODE.SHOOTING)
