@@ -115,7 +115,7 @@ Soldat.prototype = {
 	},
 	run: function(dir) {
 		this.way = dir;
-		this.soldier.vX = 2;
+		this.soldier.vX = 2*8;
 		this.setDirection.call(this,"run");
 		//this.animations.under.gotoAndPlay("run");
 	},

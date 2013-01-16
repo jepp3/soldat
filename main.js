@@ -75,7 +75,7 @@ var images = {
 		
 
 
-		createjs.SoundJS.play("main");
+		// createjs.SoundJS.play("main");
 		createjs.Ticker.addListener(tick);
 	    createjs.Ticker.useRAF = true;
 	    createjs.Ticker.setFPS(60);

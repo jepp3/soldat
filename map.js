@@ -204,7 +204,7 @@
 								animations:{
 					    			idle: [0,7,"idle",10]
 					    		},
-								offset:{x:-1860, y:-190},
+								offset:{x:-1859, y:-191},
 								layer:"forground"
 							},
 							background_water_left:{
@@ -220,12 +220,20 @@
 								animations:{
 					    			idle: [0,7,"idle",10]
 					    		},
-								offset:{x:-1860, y:-174},
+								offset:{x:-1859, y:-176},
 								layer:"background"
 							},
 							water_middle:{
 								img:window["water"],
-								frames:[[903,17,146,32,0],
+								frames:[[1050,17,603,32,0],
+										[1050,68,603,32,0],
+										[1050,119,603,32,0],
+										[1050,170,603,32,0],
+										[1050,221,603,32,0],
+										[1050,272,603,32,0],
+										[1050,323,603,32,0],
+										[1050,374,603,32,0],
+										[903,17,146,32,0],
 										[903,68,146,32,0],
 										[903,119,146,32,0],
 										[903,170,146,32,0],
@@ -241,7 +249,15 @@
 							},
 							background_water_middle:{
 								img:window["water"],
-								frames:[[903,0,146,16,0],
+								frames:[[1050,0,603,16,0],
+										[1050,51,603,16,0],
+										[1050,102,603,16,0],
+										[1050,153,603,16,0],
+										[1050,204,603,16,0],
+										[1050,255,603,16,0],
+										[1050,306,603,16,0],
+										[1050,357,603,16,0],
+										[903,0,146,16,0],
 										[903,51,146,16,0],
 										[903,102,146,16,0],
 										[903,153,146,16,0],
@@ -304,7 +320,38 @@
 					    		},
 								offset:{x:-3195, y:-174},
 								layer:"background"
+							},
+							boat_house:{
+								img:window["buildings2"],
+								frames:[[1691,0,232,224,0],
+										[1999,0,232,224,0],
+										[2311,0,232,224,0]],
+								animations:{
+									idle: [0,0,"idle"]
+								},
+								offset:{x:-2952,y:4},
+								layer:"forground"
+							},
+							boat_house_base:{
+								img:window["buildings2"],
+								frames:[[2622,0,143,224,0]],
+								animations:{
+									idle: [0,0,"idle"]
+								},
+								offset:{x:-3081,y:4},
+								layer:"background"
 							}
+							,
+							boat_house_support:{
+								img:window["buildings2"],
+								frames:[[1584,134,93,87,0]],
+								animations:{
+									idle: [0,0,"idle"]
+								},
+								offset:{x:-2961,y:-100},
+								layer:"background"
+							}
+
 						};
 			}
 			// return images;
@@ -321,6 +368,7 @@
 						,{src:"img/mission1/waterfall.png", id:"waterfall"}
 						,{src:"img/mission1/airplane.png", id:"airplane"}
 						,{src:"img/mission1/water.png", id:"water"}
+						,{src:"img/mission1/buildings2.png", id:"buildings2"}
 					]
 				break;
 			}

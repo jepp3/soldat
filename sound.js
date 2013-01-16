@@ -1,11 +1,6 @@
 (function(){
 
 	Sound = {
-
-		play: function(file){
-
-		},
-
 		manifest:  [
 					 {src:"sound/main.mp3|sound/main.ogg", id:"main"}
 					,{src:"sound/Carry Out.wav", id:"co"}
@@ -19,7 +14,7 @@
 					,{src:"sound/Soldier 4.wav", id:"s4"}
 					,{src:"sound/Soldier 5.wav", id:"s5"}
 		]
-		
+
 	};
 
 	return Sound;
