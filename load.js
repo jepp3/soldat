@@ -13,10 +13,15 @@
 
 		_complete: function(event){
 			totalLoaded++;
+			window.label.loading(parseInt((totalLoaded/manifest.length)*100));
+			stage.update();
 			if(manifest.length == totalLoaded){
+				
+				window.label.remove();
 				createjs.SoundJS.play("ms");
 				startGame();
 			}
+			window.label.clear();
 		},
 
 		/*
