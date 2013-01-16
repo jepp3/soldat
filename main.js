@@ -34,14 +34,14 @@ var images = {
 		window.s.init();
 
 
-		enemies[0] = new ShieldEnemy(stage,"0");
+	/*	enemies[0] = new ShieldEnemy(stage,"0");
 		enemies[0].init();
 		enemies[0].setPos(400,120);
 
 		enemies[1] = new ShieldEnemy(stage,"1");
 		enemies[1].init();
 		enemies[1].setPos(300,120);
-
+*/
 		label = new Label(stage);
 
 		
@@ -51,8 +51,8 @@ var images = {
 
 		stage.addChild(window.s.returnSoldier());
 
-		stage.addChild(enemies[0].returnEnemy());
-		stage.addChild(enemies[1].returnEnemy());
+	//	stage.addChild(enemies[0].returnEnemy());
+//		stage.addChild(enemies[1].returnEnemy());
 
 
 		var pos = window.s.getPos();
