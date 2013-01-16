@@ -39,7 +39,12 @@ Label.prototype = {
 	},
 	win: function()	
 	{
-		this.txt.text  = "WIN!!!";
+		
+		this.txt.color = "red";
+		this.txt.font = "bold 35px Arial"
+		this.txt.text = "WIN!!!";
+		this.txt.x = -window.stage.x +304/2;
+		this.txt.y = -window.stage.y +210/2-50;
 	},
 	loading: function(p)
 	{

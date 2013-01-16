@@ -183,7 +183,7 @@ ShieldEnemy.prototype.ai =  function(target)
 
 			this.animation.y-=offset;
 
-			if(this.timeToCheck % 5 == 0)
+			if(this.timeToCheck % 3 == 0)
 			{
 				if(this.collision = Collision.platform(this.animation,Map.platforms))
 				{
@@ -264,14 +264,9 @@ ShieldEnemy.prototype.ai =  function(target)
 		}else if(this.way == DIRECTION.RIGHT && this.collision.RIGHT){
 			this.animation.vX = 0;
 		}
-		if(target.y < (this.animation.y - 50) || target.y > (this.animation.y +50))
-		{
-			this.idle(this.way);
-		}
-		else
-		{
+
 			this.move();
-		}
+
 		this.timeToCheck++;
 	}
 };

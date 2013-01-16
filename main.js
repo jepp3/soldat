@@ -88,7 +88,7 @@ var images = {
 		// 
 		createjs.SoundJS.stop("main");
 		createjs.SoundJS.play("co");
-		label.gameOver();
+		label.win();
 
 		// ScoreBoard.txt.textAlign = "center";
 	}
