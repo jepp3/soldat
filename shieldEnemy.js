@@ -1,4 +1,3 @@
-
 function ShieldEnemy(stage,id)
 {
   Enemy.call(this,stage,id);
@@ -6,9 +5,9 @@ function ShieldEnemy(stage,id)
 	this.life = 10;
 	this.damage = 0;
 	this.ammo = 0;
-
-
-	this.bullets = new BulletHandler(10,stage);
+	this.bullets = new BulletHandler(5,stage);
+	this.timeToCheck = 0;
+	this.collision = null;
 }
 ShieldEnemy.prototype = new Enemy;
 ShieldEnemy.prototype.init = function()
@@ -176,30 +175,29 @@ ShieldEnemy.prototype.ai =  function(target)
 			var distance = 0;
 			var extension = "";
 			var acceptangle = {min:0,max:0};
-			var collision;
+			
 
 			if(this.way == DIRECTION.LEFT){
 				this.animation.vX = -Math.abs(this.animation.vX)
 			}
 
 			this.animation.y-=offset;
-			if(collision = Collision.platform(this.animation,Map.platforms))
-			{
-				// console.log(collision)
-				if(!collision){
-					this.animation.vY -= .5
-					// this.animation.y-=3; // höj soldaten lite , om vi fortfarande är under marken, icke bra
-				}
-					// if(Collision.platform(this.animation,Map.platforms) == false)
-				// {
-					this.animation.y-= this.animation.vY;
-				// }
-			} 
-			else
-			{
-				this.animation.y+=4;
-			}
 
+			if(this.timeToCheck % 5 == 0)
+			{
+				if(this.collision = Collision.platform(this.animation,Map.platforms))
+				{
+					if(!this.collision){
+						this.animation.vY -= .5
+
+					}
+					this.animation.y-= this.animation.vY;
+				} 
+				else
+				{
+					this.animation.y+=4;
+				}
+			}
 			this.animation.y+=offset;
 
 
@@ -214,6 +212,9 @@ ShieldEnemy.prototype.ai =  function(target)
 				this.way = DIRECTION.RIGHT;
 			}
 
+
+
+
 			if(distance > 150 && this.mode != MODE.RUNNING )
 			{
 				this.run.call(this,this.way);
@@ -226,9 +227,10 @@ ShieldEnemy.prototype.ai =  function(target)
 			{
 				this.protect.call(this,this.way);
 			}
-			else if(distance <= 20 && this.mode != MODE.STABBING)
+			else if(distance <= 20 && this.mode != MODE.STABBING && !(target.y < (this.animation.y - 50) || target.y > (this.animation.y +50)))
 			{
 				this.stabb.call(this,this.way);
+
 					p.setHealth(0);
 			}
 			else if(this.mode == MODE.SHOOTING)
@@ -244,7 +246,7 @@ ShieldEnemy.prototype.ai =  function(target)
 				{
 					this.bullets.add(new Bullet());
 
-							createjs.SoundJS.play("pistol","INTERRUPT_ANY");
+					createjs.SoundJS.play("pistol","INTERRUPT_ANY");
 
 					if(this.way == DIRECTION.LEFT)
 					{
@@ -257,9 +259,9 @@ ShieldEnemy.prototype.ai =  function(target)
 				}
 			}
 
-		if(this.way == DIRECTION.LEFT && collision.LEFT){
+		if(this.way == DIRECTION.LEFT && this.collision.LEFT){
 			this.animation.vX = 0;
-		}else if(this.way == DIRECTION.RIGHT && collision.RIGHT){
+		}else if(this.way == DIRECTION.RIGHT && this.collision.RIGHT){
 			this.animation.vX = 0;
 		}
 		if(target.y < (this.animation.y - 50) || target.y > (this.animation.y +50))
@@ -270,6 +272,7 @@ ShieldEnemy.prototype.ai =  function(target)
 		{
 			this.move();
 		}
+		this.timeToCheck++;
 	}
 };
 
