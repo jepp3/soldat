@@ -21,7 +21,7 @@ Bullet.prototype = {
 		this.shape = new createjs.Shape(this.g);
 		this.shape.x = 0;
 		this.shape.y = 0;
-		this.speed = 20;
+		this.speed = 7;
 		//console.log(this.shape);
 	},
 	setPos: function(x,y)
@@ -55,11 +55,11 @@ Bullet.prototype = {
 			 var pt = target.globalToLocal(this.shape.x, this.shape.y);
 	//		if (stage.mouseInBounds && child.hitTest(pt.x, pt.y)) { child.alpha = 1; } 
 	
-			// move the some degrees		
+
 			//console.log(window.stage.x);
 			if (target.hitTest(pt.x+window.stage.x, pt.y+window.stage.y))
 			{
-				
+		//		console.log("hit");
 				this.alive = false;
 				this.shape.x = -5;
 				this.shape.y = -5;

@@ -5,6 +5,43 @@ function HealthBar(stage) {
 	this.health = 100;
 }
 
+
+function Label(stage) {
+
+	this.txt = new createjs.Text('', 'Bold 35px Arial', 'red');
+	this.stage = stage;
+	this.txt.textAlign = "center";
+	this.txt.x = 304/2;
+	this.txt.y = 210/2-50;
+	this.stage.addChild(this.txt);
+}
+
+Label.prototype = {
+
+	gameOver: function()
+	{
+		this.txt.x = -window.stage.x +304/2;
+		this.txt.y = -window.stage.y +210/2-50;
+		this.txt.text = "GAME OVER!";
+	},
+	ultraKill: function()
+	{
+		this.txt.text = "ULTRA KILL!";
+	},
+	megaKill: function()
+	{
+		this.txt.text = "MEGA KILL!";
+	},
+	win: function()
+	{
+		this.txt.text  = "WIN!!!";
+	},
+	clear: function()
+	{
+		this.txt.text = "";
+	}
+}
+
 HealthBar.prototype = {
 
 	init: function()

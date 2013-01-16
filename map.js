@@ -22,16 +22,10 @@
 			this.stage = stage;
 			this.load(map);
 
-			//Platforms
-			var bitmap;
-
 			// Bitmaps
 			for(i in this.images.bitmaps){
-				bitmap = new Image();
-				bitmap.src = this.images.bitmaps[i].url;
-				bitmap.onerror = handleImageError;
 
-				bitmap.onload = this.addToLayer(new createjs.Bitmap(bitmap),
+				this.addToLayer(new createjs.Bitmap(this.images.bitmaps[i].img),
 						this.images.bitmaps[i].layer,
 						i,
 						this.images.bitmaps[i].position);
@@ -40,13 +34,13 @@
 		    // Animations
 		    for(i in this.images.animations){
 		    	animation = new createjs.SpriteSheet({
-		    		images: [this.images.animations[i].url],
+		    		images: [this.images.animations[i].img],
 		    		frames: this.images.animations[i].frames,
 		    		animations: this.images.animations[i].animations,
 		    	});
 
-		    	animation.onerror = handleImageError;
-		    	animation.onload = this.addToLayer(new createjs.BitmapAnimation(animation),
+		    	// animation.onerror = handleImageError;
+		    	this.addToLayer(new createjs.BitmapAnimation(animation),
 		    			this.images.animations[i].layer,
 		    			i,
 		    			this.images.animations[i].position);
@@ -142,17 +136,17 @@
 						this.height = 240,
 						this.images.bitmaps = {
 							platform:{
-								url:"img/mission1/background_platform.png",
+								img:window["background_platform"],
 								offset:{x:0,y:17},
 								layer:"platform"
 							},
 							background:{
-								url:"img/mission1/background.png",
+								img:window["background"],
 								offset:{x:0,y:17},
 								layer:"background",
 							},
 							forest:{
-								url:"img/mission1/horizon_forest.png",
+								img:window["horizon_forest"],
 
 								offset:{x:-1900, y:38},
 
@@ -161,7 +155,7 @@
 						};
 						this.images.animations = {
 							boat:{
-								url:"img/mission1/horizon_boat.jpg",
+								img:window["horizon_boat"],
 								frames:{width:319, height:250},
 								animations:{
 									idle: [0,7,"idle",10]
@@ -170,7 +164,7 @@
 								layer:"far_horizon"
 							},
 							horizon_waterfall:{
-								url:"img/mission1/horizon_waterfall.png",
+								img:window["horizon_waterfall"],
 								frames:{width:278 , height:192},
 								animations:{
 					    			idle: [0,6,"idle",10]
@@ -180,7 +174,7 @@
 								position:0
 							},
 							waterfall:{
-								url:"img/mission1/waterfall.png",
+								img:window["waterfall"],
 								frames:{width:431 , height:271},
 								animations:{
 					    			idle: [0,7,"idle",10]
@@ -189,7 +183,7 @@
 								layer:"background"
 							},
 							airplane:{
-								url:"img/mission1/airplane.png",
+								img:window["airplane"],
 								frames:{width:833 , height:305},
 								animations:{
 					    			idle: [0,7,"idle",10]
@@ -198,7 +192,7 @@
 								layer:"forground"
 							},
 							water_left:{
-								url:"img/mission1/water.png",
+								img:window["water"],
 								frames:[[0,17,902,32,0],
 										[0,68,902,32,0],
 										[0,119,902,32,0],
@@ -214,7 +208,7 @@
 								layer:"forground"
 							},
 							background_water_left:{
-								url:"img/mission1/water.png",
+								img:window["water"],
 								frames:[[0,0,902,16,0],
 										[0,51,902,16,0],
 										[0,102,902,16,0],
@@ -230,7 +224,7 @@
 								layer:"background"
 							},
 							water_middle:{
-								url:"img/mission1/water.png",
+								img:window["water"],
 								frames:[[903,17,146,32,0],
 										[903,68,146,32,0],
 										[903,119,146,32,0],
@@ -246,7 +240,7 @@
 								layer:"forground"
 							},
 							background_water_middle:{
-								url:"img/mission1/water.png",
+								img:window["water"],
 								frames:[[903,0,146,16,0],
 										[903,51,146,16,0],
 										[903,102,146,16,0],
@@ -262,7 +256,7 @@
 								layer:"background"
 							},
 							water_right:{
-								url:"img/mission1/water.png",
+								img:window["water"],
 								frames:[[1050,17,603,32,0],
 										[1050,68,603,32,0],
 										[1050,119,603,32,0],
@@ -279,7 +273,7 @@
 								position:0
 							},
 							background_water_right:{
-								url:"img/mission1/water.png",
+								img:window["water"],
 								frames:[[1050,0,603,16,0],
 										[1050,51,603,16,0],
 										[1050,102,603,16,0],
@@ -296,7 +290,7 @@
 								position:0
 							},
 							background_water_farright:{
-								url:"img/mission1/water.png",
+								img:window["water"],
 								frames:[[1082,0,571,16,0],
 										[1082,51,571,16,0],
 										[1082,102,571,16,0],
@@ -314,7 +308,24 @@
 						};
 			}
 			// return images;
+		},
+		getManifest: function(mission){
+			switch(mission){
+				case "mission1":
+					return [
+						{src:"img/mission1/background_platform.png", id:"background_platform"}
+						,{src:"img/mission1/background.png", id:"background"}
+						,{src:"img/mission1/horizon_forest.png", id:"horizon_forest"}
+						,{src:"img/mission1/horizon_boat.jpg", id:"horizon_boat"}
+						,{src:"img/mission1/horizon_waterfall.jpg", id:"horizon_waterfall"}
+						,{src:"img/mission1/waterfall.png", id:"waterfall"}
+						,{src:"img/mission1/airplane.png", id:"airplane"}
+						,{src:"img/mission1/water.png", id:"water"}
+					]
+				break;
+			}
 		}
+
 	}
 
 	window.Map = new Map();

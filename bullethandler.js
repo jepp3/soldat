@@ -29,7 +29,7 @@ BulletHandler.prototype = {
 	},
 	last: function()
 	{
-		
+
 		return this.bullets[this.num-1];
 	}
 }

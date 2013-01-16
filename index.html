@@ -5,6 +5,7 @@
     <title>soldat</title>
 
     <!-- Import EaselJS Framework -->
+    <script src=" http://code.createjs.com/preloadjs-0.2.0.min.js"></script>
     <script src="http://code.createjs.com/easeljs-0.5.0.min.js"></script>
     <script src="http://code.createjs.com/soundjs-0.3.0.min.js"></script>
   <style>
@@ -12,14 +13,41 @@
     {
       cursor:crosshair;
     }
+    h1
+    {
+      text-align: center;
+      color:#EC8E46;
+    }
+    canvas {
+      border:3px solid #515151;
+      background-color: white;
+      -webkit-border-radius: 2px;
+      border-radius: 2px; 
+-webkit-box-shadow: 0px 6px 10px 3px gray;
+box-shadow: 0px 6px 10px 3px gray; 
+    }
+    .content {
+        width: 308px;    
+        margin-left: auto;
+        margin-right: auto;
+     }
+     body
+     {
+      background-image:url('http://subtlepatterns.subtlepatterns.netdna-cdn.com/patterns/shattered.png');
+      background-repeat:repeat;
+     }
+
+
   </style>
    
 </head>
-<body>
-    <h1>RUN FOREST RUN!</h1>
+<body onload="preparations();">
+  <div class = "content">
+    <img src="img/dom/metal_slug_logo.png" alt ="hmm"/>
     <canvas id="metal_slug" width="304" height="210"> <!-- Widescreen: width="608" height="342" -->
         Your browser doesn't support canvas.
     </canvas>
+  </div>
       <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 
       <script src ="keyHandler.js"></script>
@@ -33,5 +61,8 @@
       <script src="collision.js"></script>
       <script src="main.js"></script>
       <script src="map.js"></script>
+      <script src="sound.js"></script>
+      <script src="load.js"></script>
+     
 </body>
 </html>

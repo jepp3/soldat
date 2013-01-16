@@ -1,7 +1,6 @@
 'use strict';
 function Soldat(stage)
 {
-	this.images = {over: null, under: null};
 	this.animations = {over: null, under:null};
 	this.soldier = new createjs.Container();
 	
@@ -14,27 +13,24 @@ function Soldat(stage)
 	this.bullets = new BulletHandler(10,this.stage);
 }
 Soldat.prototype = {
-	init: function(under,over) {
-		this.images.over =over;
-		this.images.under = under;
+	init: function() {
 		this.build.call(this);
-
-
 	},
 	build: function() {
 		//	Create sprites for runing , standing , walking (12 x 3)
 		var underSprite = new createjs.SpriteSheet({
-	  		images: [this.images.under],
+	  		images: [window["under"]],
 	  		frames: {width:30, height:20, regX:10, regY:10},
 	  		animations: {
-	  			run: [0,5,"run",2],
+
+	  			run: [0,5,"run",3],
 	  			idle: [6,8,"idle",4]
 	  		}
 		});
 
 
 		var overSprite = new createjs.SpriteSheet({
-	  		images: [this.images.over],
+	  		images: [window["over"]],
 	  		frames: {width:56.5, height:26, regX:13, regY:13},
 	  		animations: {
 	  			shoot: [0,6,"idle",1],
@@ -72,8 +68,6 @@ Soldat.prototype = {
 		this.soldier.y = 100;
 		this.soldier.vY = 0;
 		this.soldier.vX = 0;
-
-
 
 	},
 	getPos: function()
@@ -156,7 +150,7 @@ Soldat.prototype = {
 
 	},
 	die: function(wayToDie) {
-		this.soldier.visible = false;
+		//this.soldier.isVisible = false;
 		this.dead = true;
 	},
 	update:function() {
@@ -173,8 +167,6 @@ Soldat.prototype = {
 
 
 	    	this.angle = angle;
-// this.soldier.vY = this.soldier.weight.y;
-// this.solider.vX = this.solider.weight.x;
 
 	    	if(this.jumping == true || !Collision.platform(this.soldier, Map.platforms)) {
 	    		this.jumping = true;
@@ -217,6 +209,9 @@ Soldat.prototype = {
 	    		}
 	    		//this.idle.call(this,90);    		
 	    		this.animations.over.rotation = angle -25;
+
+
+
 	    	}
 
 // console.log(this.soldier.x)

@@ -11,14 +11,10 @@ function ShieldEnemy(stage,id)
 	this.bullets = new BulletHandler(10,stage);
 }
 ShieldEnemy.prototype = new Enemy;
-ShieldEnemy.prototype.init = function(image)
+ShieldEnemy.prototype.init = function()
 {
-		this.image = image;
-
-		
-
 		var sprite = new createjs.SpriteSheet({
-			images: [this.image],
+			images: [window["shield_run"]],
 	  		frames: {width:55, height:49, regX:23, regY:24},
 			animations: {
 				run: [0,11,"run",2],
@@ -140,18 +136,36 @@ ShieldEnemy.prototype.protect =  function(dir)
 ShieldEnemy.prototype.die = function(dir)
 {
 
+	if(this.mode != MODE.DEAD) {
 		this.damage = 30;
 		this.animation.vX = 1;
 		this.mode = MODE.DEAD;
 		this.life = 0;
-		if(dir == DIRECTION.RIGHT)
-		{
+
+		switch(Math.floor((Math.random()*5)+1)){
+				case 1:
+					createjs.SoundJS.play("s1","INTERRUPT_NONE");
+				break;
+				case 2:
+					createjs.SoundJS.play("s2","INTERRUPT_NONE");
+				break;
+				case 3:
+					createjs.SoundJS.play("s3", "INTERRUPT_NONE")
+				break;
+				case 4:
+					createjs.SoundJS.play("s4", "INTERRUPT_NONE")
+				break;
+				case 5:
+					createjs.SoundJS.play("s5", "INTERRUPT_NONE")
+				break
+			}
+		if(dir == DIRECTION.RIGHT) {
 			this.animation.gotoAndPlay("dead");
 		}
-		else
-		{
+		else {
 			this.animation.gotoAndPlay("dead_h");
 		}
+	}
 };
 ShieldEnemy.prototype.ai =  function(target)
 {
@@ -162,6 +176,7 @@ ShieldEnemy.prototype.ai =  function(target)
 			var distance = 0;
 			var extension = "";
 			var acceptangle = {min:0,max:0};
+
 
 			this.animation.y-=offset;
 			if(Collision.platform(this.animation,Map.platforms))
@@ -179,8 +194,7 @@ ShieldEnemy.prototype.ai =  function(target)
 
 			this.animation.y+=offset;
 
-		
-		// if soldier is on left side, turn left (if not already in that direction)
+
 			if(target.x <= this.animation.x)
 			{
 				distance = this.animation.x - target.x;
@@ -191,7 +205,6 @@ ShieldEnemy.prototype.ai =  function(target)
 				distance = target.x -this.animation.x;
 				this.way = DIRECTION.RIGHT;
 			}
-
 
 			if(distance > 150 && this.mode != MODE.RUNNING )
 			{
@@ -208,6 +221,7 @@ ShieldEnemy.prototype.ai =  function(target)
 			else if(distance <= 20 && this.mode != MODE.STABBING)
 			{
 				this.stabb.call(this,this.way);
+					p.setHealth(0);
 			}
 			else if(this.mode == MODE.SHOOTING)
 			{
@@ -215,7 +229,6 @@ ShieldEnemy.prototype.ai =  function(target)
 				this.ammo++;
 				if(this.ammo == 150)
 				{
-					//console.log("moving to protect");
 					this.shoot.call(this,this.way);	
 					this.ammo = 0;
 				}

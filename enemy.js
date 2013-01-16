@@ -31,7 +31,6 @@ Enemy.prototype = {
 	},
 	returnEnemy: function()
 	{
-		
 		return this.animation;
 	},
 	move: function()
