@@ -35,14 +35,9 @@ Enemy.prototype = {
 	},
 	move: function()
 	{
-		if (this.way == DIRECTION.RIGHT) {
-        	this.animation.x += this.animation.vX;
-           	this.animation.y += this.animation.vY;
-        }
-        else {
-          	this.animation.x -= this.animation.vX;
-           	this.animation.y -= this.animation.vY;
-        }	    	
+    	this.animation.x += this.animation.vX;
+       	this.animation.y += this.animation.vY;
+
 	},
 	die: function(dir)
 	{

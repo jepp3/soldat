@@ -132,7 +132,7 @@
 
 			switch(mission){
 			case "mission1":
-						this.width = 4153,
+						this.width = 4020,
 						this.height = 240,
 						this.images.bitmaps = {
 							platform:{

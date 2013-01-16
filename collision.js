@@ -233,8 +233,7 @@ THE SOFTWARE.
 			return null;
 		},
 		grid: function(player){
-			// var y = 0;
-// console.log(Map.backgrounds.getChildAt(2).regX)
+
 			if(player.vX > 0 && player.x > canvas.width/2 + Math.abs(stage.x)){
 				// Right movements
 		//		console.log(window.M)

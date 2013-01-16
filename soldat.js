@@ -100,14 +100,8 @@ Soldat.prototype = {
 		return this.way;
 	},
 	move: function() {
-		// if (this.way == DIRECTION.RIGHT) {
           	this.soldier.x += this.soldier.vX;
            this.soldier.y += this.soldier.vY;
-        // }
-        // else {
-        //   	this.soldier.x -= this.soldier.vX;
-        //    this.soldier.y -= this.soldier.vY;
-        // }
 	},
 	idle: function(dir) {
 		this.way = dir;
@@ -135,8 +129,6 @@ Soldat.prototype = {
 	},
 	jump:function(dir) {
 		if(!this.jumping){
-			this.soldier.y -= this.collision.height;
-			// this.soldier.weight.y = 8;
 			this.soldier.vY = -8;
 			this.way = dir;
 			this.jumping = true;

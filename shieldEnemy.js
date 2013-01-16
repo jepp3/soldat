@@ -176,16 +176,24 @@ ShieldEnemy.prototype.ai =  function(target)
 			var distance = 0;
 			var extension = "";
 			var acceptangle = {min:0,max:0};
+			var collision;
 
+			if(this.way == DIRECTION.LEFT){
+				this.animation.vX = -Math.abs(this.animation.vX)
+			}
 
 			this.animation.y-=offset;
-			if(Collision.platform(this.animation,Map.platforms))
+			if(collision = Collision.platform(this.animation,Map.platforms))
 			{
-				this.animation.y-=3; // höj soldaten lite , om vi fortfarande är under marken, icke bra
-				if(Collision.platform(this.animation,Map.platforms) == false)
-				{
-					this.animation.y+=3;
+				// console.log(collision)
+				if(!collision){
+					this.animation.vY -= .5
+					// this.animation.y-=3; // höj soldaten lite , om vi fortfarande är under marken, icke bra
 				}
+					// if(Collision.platform(this.animation,Map.platforms) == false)
+				// {
+					this.animation.y-= this.animation.vY;
+				// }
 			} 
 			else
 			{
@@ -248,6 +256,12 @@ ShieldEnemy.prototype.ai =  function(target)
 					}
 				}
 			}
+
+		if(this.way == DIRECTION.LEFT && collision.LEFT){
+			this.animation.vX = 0;
+		}else if(this.way == DIRECTION.RIGHT && collision.RIGHT){
+			this.animation.vX = 0;
+		}
 		if(target.y < (this.animation.y - 50) || target.y > (this.animation.y +50))
 		{
 			this.idle(this.way);

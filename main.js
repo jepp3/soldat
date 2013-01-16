@@ -105,7 +105,7 @@ var images = {
 	//	Math.floor((Math.random()*100)+1); 
 
 
-		enemies[index].setPos(Math.floor((Math.random()*(pos.x+500))+(pos.x+200)),120);
+		enemies[index].setPos(Math.floor((Math.random()*(pos.x+500))+(pos.x+200)),20);
 	}
 
 	/*
