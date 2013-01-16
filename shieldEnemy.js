@@ -183,7 +183,7 @@ ShieldEnemy.prototype.ai =  function(target)
 
 			this.animation.y-=offset;
 
-			if(this.timeToCheck % 10 == 0)
+			if(this.timeToCheck % 5 == 0)
 			{
 				if(this.collision = Collision.platform(this.animation,Map.platforms))
 				{
