@@ -33,15 +33,16 @@ var images = {
 		window.s = new Soldat(stage);
 		window.s.init();
 
+		createjs.SoundJS.play("main","INTERRUPT_NONE");
 
-		enemies[0] = new ShieldEnemy(stage,"0");
+	/*	enemies[0] = new ShieldEnemy(stage,"0");
 		enemies[0].init();
 		enemies[0].setPos(400,120);
 
 		enemies[1] = new ShieldEnemy(stage,"1");
 		enemies[1].init();
 		enemies[1].setPos(300,120);
-
+*/
 		label = new Label(stage);
 
 		
@@ -51,8 +52,8 @@ var images = {
 
 		stage.addChild(window.s.returnSoldier());
 
-		stage.addChild(enemies[0].returnEnemy());
-		stage.addChild(enemies[1].returnEnemy());
+	//	stage.addChild(enemies[0].returnEnemy());
+//		stage.addChild(enemies[1].returnEnemy());
 
 
 		var pos = window.s.getPos();
@@ -118,6 +119,13 @@ var images = {
 	  	//	window.b.setPos(stage.mouseX,stage.mouseY);
 	  //		window.b.setDestination(stage.mouseX,stage.mouseY);
 
+	  		if(p.health <= 0)
+	  		{
+				window.s.die("die");
+				label.gameOver();
+	  		}
+	  		else
+	  		{
 			var i = 0,j = 0;
 			for(i = 0; i < enemies.length;i++)
 			{
@@ -128,16 +136,10 @@ var images = {
 	  				if(window.enemies[i].bullets.at(j).update(window.s.returnSoldier()))
 	  				{
 	  					p.setHealth(p.health-5);
-
-	  					if(p.health <= 0)
-	  					{
-	  						window.s.die("die");
-	  						label.gameOver();
-	  					}
 	  				}
 	  			}
 	  		}
-
+	  		}	
 
 
 	  		// take the soldiers bullets , and check if they hit anything
@@ -152,6 +154,30 @@ var images = {
 	    			if(window.s.bullets.at(i).update(enemies[j].returnEnemy()))
 	    			{
 
+	    				window.s.kills++;
+
+	    				if(window.s.kills % 4 == 0)
+	    				{
+	    					console.log(Math.floor((Math.random()*3)+1));
+	    					switch(Math.floor((Math.random()*3)+1))
+	    					{
+								case 1:
+								{
+									createjs.SoundJS.play("allen2","INTERRUPT_ANY");
+									break;
+								}
+								case 2:
+								{
+									createjs.SoundJS.play("allen4","INTERRUPT_ANY");									
+									break;
+								}
+								case 3:
+								{
+									createjs.SoundJS.play("allen6","INTERRUPT_ANY");
+									break;
+								}
+							}
+	    				}
 	    				enemies[j].die(enemies[j].way);
 	    				scoreBoard.addScore(20);
 	    				setTimeout(resetEnemy, 800, j);

@@ -10,6 +10,7 @@ function Soldat(stage)
 	this.dead = false;
 	this.way = DIRECTION.RIGHT;
 	this.angle = 0;
+	this.kills = 0;
 	this.bullets = new BulletHandler(10,this.stage);
 	this.collision = false;
 }
