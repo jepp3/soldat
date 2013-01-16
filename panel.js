@@ -6,6 +6,7 @@ function HealthBar(stage) {
 }
 
 
+
 function Label(stage) {
 
 	this.txt = new createjs.Text('', 'Bold 35px Arial', 'red');
@@ -20,9 +21,13 @@ Label.prototype = {
 
 	gameOver: function()
 	{
+		console.log("game over");
+		this.txt.color = "red";
+		this.txt.font = "bold 35px Arial"
+		this.txt.text = "GAME OVER!";
 		this.txt.x = -window.stage.x +304/2;
 		this.txt.y = -window.stage.y +210/2-50;
-		this.txt.text = "GAME OVER!";
+		
 	},
 	ultraKill: function()
 	{
@@ -32,13 +37,30 @@ Label.prototype = {
 	{
 		this.txt.text = "MEGA KILL!";
 	},
-	win: function()
+	win: function()	
 	{
 		this.txt.text  = "WIN!!!";
 	},
+	loading: function(p)
+	{
+		this.txt.font = "bold 60px Arial"
+		this.txt.color = "#FF5F00";
+		this.txt.text  = "LOADING\n"+p+"%";
+	},
 	clear: function()
 	{
+		console.log("clear");
 		this.txt.text = "";
+	},
+	remove: function()
+	{
+		console.log("removed");
+		this.stage.removeChild(this.txt);
+	},
+	add: function()
+	{
+		console.log("added");
+		this.stage.addChild(this.txt);
 	}
 }
 
