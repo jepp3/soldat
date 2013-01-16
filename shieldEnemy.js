@@ -232,9 +232,11 @@ ShieldEnemy.prototype.ai =  function(target)
 					this.shoot.call(this,this.way);	
 					this.ammo = 0;
 				}
-				else if(this.ammo % 20 == 0)
+				else if(this.ammo % 14 == 0)
 				{
 					this.bullets.add(new Bullet());
+
+							createjs.SoundJS.play("pistol","INTERRUPT_ANY");
 
 					if(this.way == DIRECTION.LEFT)
 					{
