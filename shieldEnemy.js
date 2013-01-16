@@ -141,7 +141,7 @@ ShieldEnemy.prototype.die = function(dir)
 		this.animation.vX = 1;
 		this.mode = MODE.DEAD;
 		this.life = 0;
-
+		this.bullets.clear();
 		switch(Math.floor((Math.random()*5)+1)){
 				case 1:
 					createjs.SoundJS.play("s1","INTERRUPT_NONE");
