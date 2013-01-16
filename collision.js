@@ -215,24 +215,27 @@ THE SOFTWARE.
 					alpha2 = imageData2.length > offset+1 ? imageData2[offset] / 255 : 0;
 
 					if(alpha1 > alpha && alpha2 > alpha){
-
-						return {x:x,y:y,width:1,height:1};
+						if ( x < pixelRect.x ) pixelRect.x = x;
+		                if ( x > pixelRect.x2 ) pixelRect.x2 = x;
+		                if ( y < pixelRect.y ) pixelRect.y = y;
+		                if ( y > pixelRect.y2 ) pixelRect.y2 = y;
+						// return {x:x,y:y,width:1,height:1};
 					}
 					offset += 4;
 				}
 			}
 
-			// if( pixelRect.x != Infinity) {
-			// 	pixelRect.width = pixelRect.x2 - pixelRect.x+1;
-			// 	pixelRect.height = pixelRect.y2 - pixelRect.y+1;
-			// 	return pixelRect;
-			// }
+			if( pixelRect.x != Infinity) {
+				pixelRect.width = pixelRect.x2 - pixelRect.x+1;
+				pixelRect.height = pixelRect.y2 - pixelRect.y+1;
+				return pixelRect;
+			}
 			return null;
 		},
-		grid: function(player, direction){
+		grid: function(player){
 			// var y = 0;
 // console.log(Map.backgrounds.getChildAt(2).regX)
-			if(direction == DIRECTION.RIGHT && player.x > canvas.width/2 + Math.abs(stage.x)){
+			if(player.vX > 0 && player.x > canvas.width/2 + Math.abs(stage.x)){
 				// Right movements
 		//		console.log(window.M)
 				if(Math.abs(stage.x) + canvas.width < Map.width){
@@ -243,10 +246,10 @@ THE SOFTWARE.
 		  			}
 		  			return true;
 		  		}
-			}else if(direction == DIRECTION.LEFT && player.x +stage.x < canvas.width/10){
+			}else if(player.vX < 0 && player.x +stage.x < canvas.width/10){
 				// Left movements
   				if(Math.abs(stage.x) > 0){
-					Map.update(player.vX, -player.vX);
+					Map.update(-player.vX, player.vX);
 	  			}
 	  			else{
 	  				if(player.x + Math.abs(stage.x) > 16)
@@ -259,10 +262,11 @@ THE SOFTWARE.
 		},
 		platform: function(object, platforms){
 			// console.log(character);
-			var	obj = object.clone(true),
+			var	//obj = object//.clone(true),
 				hitArea,
 				bitmap,
 				collision = false;
+
 
 			var compare = object;
 			if(object instanceof createjs.Container)
@@ -276,7 +280,36 @@ THE SOFTWARE.
 			for(var i=0; i<platforms.getNumChildren(); i++)
 			{
 				if(collision = this.checkCollision(compare, platforms.getChildAt(i))){
+					collision.TOP = collision.RIGHT = collision.BOTTOM = collision.LEFT = false;
+					objectBounds = this.getBounds(object);
+					// console.log(objectBounds)
+					if(collision.width > collision.height && collision.height < 10){
+						if(collision.y < objectBounds.y+objectBounds.height/2){
+							// console.log("TOP")
+							collision.TOP = true;
+						}else{
+							// console.log("BOTTOM")
+							collision.BOTTOM = true;
+						}
+					}else if( collision.width < 10){
+						if(collision.x < objectBounds.x+objectBounds.width/2){
+							// console.log("LEFT")
+							collision.LEFT = true;
+						}else{
+							// console.log("RIGHT")
+							collision.RIGHT = true;
+						}
+					}
+					else{
 
+						if(object.vX < 0 && collision.x < objectBounds.x+objectBounds.width/2){
+							collision.LEFT = true;
+						}else if(object.vX > 0){
+							collision.RIGHT = true;
+						}
+						collision.BOTTOM = true;
+
+					}
 					return collision;
 
 				}

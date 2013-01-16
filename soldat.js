@@ -11,6 +11,7 @@ function Soldat(stage)
 	this.way = DIRECTION.RIGHT;
 	this.angle = 0;
 	this.bullets = new BulletHandler(10,this.stage);
+	this.collision = false;
 }
 Soldat.prototype = {
 	init: function() {
@@ -98,14 +99,14 @@ Soldat.prototype = {
 		return this.way;
 	},
 	move: function() {
-		if (this.way == DIRECTION.RIGHT) {
+		// if (this.way == DIRECTION.RIGHT) {
           	this.soldier.x += this.soldier.vX;
            this.soldier.y += this.soldier.vY;
-        }
-        else {
-          	this.soldier.x -= this.soldier.vX;
-           this.soldier.y -= this.soldier.vY;
-        }
+        // }
+        // else {
+        //   	this.soldier.x -= this.soldier.vX;
+        //    this.soldier.y -= this.soldier.vY;
+        // }
 	},
 	idle: function(dir) {
 		this.way = dir;
@@ -115,7 +116,7 @@ Soldat.prototype = {
 	},
 	run: function(dir) {
 		this.way = dir;
-		this.soldier.vX = 2*8;
+		this.soldier.vX = 2;
 		this.setDirection.call(this,"run");
 		//this.animations.under.gotoAndPlay("run");
 	},
@@ -133,7 +134,9 @@ Soldat.prototype = {
 	},
 	jump:function(dir) {
 		if(!this.jumping){
-			this.soldier.weight.y = 8;
+			this.soldier.y -= this.collision.height;
+			// this.soldier.weight.y = 8;
+			this.soldier.vY = -8;
 			this.way = dir;
 			this.jumping = true;
 		}
@@ -163,22 +166,24 @@ Soldat.prototype = {
 	    	my = this.stage.mouseY - stage.y;
 	    	var angle = Math.atan2(my - cy, mx - cx) * 180 / Math.PI;
 
+
 	    	if(angle < 0) { angle = 360 + angle; }
 
 
 	    	this.angle = angle;
 
-	    	if(this.jumping == true || !Collision.platform(this.soldier, Map.platforms)) {
-	    		this.jumping = true;
-	    		this.soldier.weight.y = this.soldier.weight.y - 0.5;
-				this.soldier.y -= this.soldier.weight.y;
+	    	if(this.jumping == true ){//|| !Collision.platform(this.soldier, Map.platforms)) {
+	    		// this.jumping = true;
+	    		this.soldier.vY += 0.5;
+	    		// this.soldier.weight.y = this.soldier.weight.y - 0.5;
+				// this.soldier.y -= this.soldier.weight.y;
 				// this.soldier.vY = this.soldier.weight.y;
 	    	}
 
-	    	if(this.soldier.weight.y <= 0 && Collision.platform(this.soldier, Map.platforms)) {
-	    		this.soldier.weight.y = 0;
-	    		this.jumping = false;
-	    	}
+	    	// if(this.soldier.weight.y <= 0 && Collision.platform(this.soldier, Map.platforms)) {
+	    	// 	this.soldier.weight.y = 0;
+	    	// 	this.jumping = false;
+	    	// }
 
 	  		// OM musen Ã¤rÂ¨pÃ¥ vÃ¤nster sida av soldaten  och  vi gÃ¥r Ã¥t hÃ¶ger
 	    	if(this.stage.mouseX - stage.x < this.soldier.x  && Key.isDown(Key.D) ==true) {
@@ -214,8 +219,30 @@ Soldat.prototype = {
 
 	    	}
 
-// console.log(this.soldier.x)
-	    	if(!Collision.grid(this.soldier, this.way)){
+	    	if(this.way === DIRECTION.LEFT){
+	    		this.soldier.vX = -Math.abs(this.soldier.vX);
+	    	}
+
+	    	if(this.collision = Collision.platform(this.soldier, Map.platforms)) {
+	    		var move = false;
+
+	    		if(this.collision.BOTTOM && this.soldier.vY >= 0) {
+		    		this.soldier.vY = 0;
+		    		this.jumping = false;
+		    	}
+
+		    	if(this.soldier.vX > 0 && this.collision.RIGHT){
+		    		this.soldier.vX = 0;
+		    	}else if(this.soldier.vX < 0 && this.collision.LEFT){
+		    		this.soldier.vX = 0;
+		    	}
+	    	}
+
+	    	if(!this.collision.BOTTOM){
+	    		this.jumping = true;
+	    	}
+
+	    	if(!Collision.grid(this.soldier)){
 		    	this.move();
 		    }
 	    }
